@@ -37,6 +37,8 @@ public:
 	void render(wxDC& dc);
 	void OnSize(wxSizeEvent& evt);
 	void initVariables();
+	void initMenu();
+	void initGame();
 	void boardSelect(wxCommandEvent& evt);
 
 	wxDECLARE_EVENT_TABLE();

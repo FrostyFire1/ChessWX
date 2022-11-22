@@ -19,12 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="board.h" />
     <ClInclude Include="cApp.h" />
     <ClInclude Include="cMain.h" />
     <ClInclude Include="Pieces\pawn.h" />
     <ClInclude Include="wxImagePanel.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="board.cpp" />
     <ClCompile Include="cApp.cpp" />
     <ClCompile Include="cMain.cpp" />
     <ClCompile Include="Pieces\pawn.cpp" />
