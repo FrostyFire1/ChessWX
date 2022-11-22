@@ -1,8 +1,11 @@
+#pragma once
 #include "piece.h"
-class pawn : piece{
-
+#include <string>
+class pawn : public piece{
 public:
 	pawn();
 	~pawn();
-
+public:
+	std::string displayText;
+	std::string getDisplayText() override;
 };

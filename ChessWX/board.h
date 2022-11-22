@@ -1,12 +1,14 @@
-
+#pragma once
+#include "Pieces/piece.h"
+#include "Pieces/pawn.h"
 class board {
 
 public:
-	board();
+	board(int width, int height);
 	~board();
 
 public:
-	int pos1 = -1, pos2 = -1;
-
-
+	int pos1 = -1, pos2 = -1, width, height;
+	piece** boardState;
+	
 };

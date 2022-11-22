@@ -4,7 +4,7 @@
 #include "wx/event.h"
 #include "wxImagePanel.h"
 #include "wx/grid.h"
-
+#include "board.h"
 class cMain : public wxFrame{
 typedef wxEvtHandler Inherited;
 public:
@@ -30,6 +30,7 @@ public:
 	wxBitmap resized;
 	int h = -1;
 	int w = -1;
+	board* gameBoard = nullptr;
 
 	void onButtonClicked(wxCommandEvent& evt);
 	void paintEvent(wxPaintEvent& evt);

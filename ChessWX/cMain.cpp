@@ -1,6 +1,5 @@
 #pragma once
 #include "cMain.h"
-
 wxBEGIN_EVENT_TABLE(cMain, wxFrame)
 	EVT_BUTTON(10001, onButtonClicked)
     EVT_PAINT(paintEvent)
@@ -58,7 +57,7 @@ void cMain::initGame() {
             chessBoard->Add(boardButtons[y * 8 + x], 1, wxEXPAND | wxALL);
         }
     }
-
+    gameBoard = new board(8, 8);
     gameSizer->Add(0, 0, 2);
     gameSizer->Add(chessBoard, 1, wxSHAPED, 0);
 }
@@ -67,7 +66,8 @@ void cMain::boardSelect(wxCommandEvent& evt) {
     int trueId = evt.GetId() - 20000;
     int x = trueId % 8;
     int y = trueId / 8;
-    boardButtons[y*8+x]->SetLabel("click!");
+    std::string displayText = gameBoard->boardState[y * 8 + x]->getDisplayText();
+    boardButtons[y*8+x]->SetLabel(displayText);
 
     evt.Skip();
 }
