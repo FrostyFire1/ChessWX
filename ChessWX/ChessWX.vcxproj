@@ -23,6 +23,7 @@
     <ClInclude Include="cApp.h" />
     <ClInclude Include="cMain.h" />
     <ClInclude Include="Pieces\pawn.h" />
+    <ClInclude Include="Pieces\piece.h" />
     <ClInclude Include="wxImagePanel.h" />
   </ItemGroup>
   <ItemGroup>
@@ -30,6 +31,7 @@
     <ClCompile Include="cApp.cpp" />
     <ClCompile Include="cMain.cpp" />
     <ClCompile Include="Pieces\pawn.cpp" />
+    <ClCompile Include="Pieces\piece.cpp" />
     <ClCompile Include="wxImagePanel.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
