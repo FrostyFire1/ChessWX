@@ -33,19 +33,19 @@
     <ClInclude Include="Pieces\piece.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="rook.h">
+    <ClInclude Include="Pieces\bishop.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="knight.h">
+    <ClInclude Include="Pieces\king.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bishop.h">
+    <ClInclude Include="Pieces\knight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="queen.h">
+    <ClInclude Include="Pieces\queen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="king.h">
+    <ClInclude Include="Pieces\rook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -68,19 +68,19 @@
     <ClCompile Include="Pieces\piece.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="rook.cpp">
+    <ClCompile Include="Pieces\bishop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="knight.cpp">
+    <ClCompile Include="Pieces\king.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bishop.cpp">
+    <ClCompile Include="Pieces\knight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="queen.cpp">
+    <ClCompile Include="Pieces\queen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="king.cpp">
+    <ClCompile Include="Pieces\rook.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

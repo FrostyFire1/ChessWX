@@ -19,29 +19,29 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bishop.h" />
     <ClInclude Include="board.h" />
     <ClInclude Include="cApp.h" />
     <ClInclude Include="cMain.h" />
-    <ClInclude Include="king.h" />
-    <ClInclude Include="knight.h" />
+    <ClInclude Include="Pieces\bishop.h" />
+    <ClInclude Include="Pieces\king.h" />
+    <ClInclude Include="Pieces\knight.h" />
     <ClInclude Include="Pieces\pawn.h" />
     <ClInclude Include="Pieces\piece.h" />
-    <ClInclude Include="queen.h" />
-    <ClInclude Include="rook.h" />
+    <ClInclude Include="Pieces\queen.h" />
+    <ClInclude Include="Pieces\rook.h" />
     <ClInclude Include="wxImagePanel.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="bishop.cpp" />
     <ClCompile Include="board.cpp" />
     <ClCompile Include="cApp.cpp" />
     <ClCompile Include="cMain.cpp" />
-    <ClCompile Include="king.cpp" />
-    <ClCompile Include="knight.cpp" />
+    <ClCompile Include="Pieces\bishop.cpp" />
+    <ClCompile Include="Pieces\king.cpp" />
+    <ClCompile Include="Pieces\knight.cpp" />
     <ClCompile Include="Pieces\pawn.cpp" />
     <ClCompile Include="Pieces\piece.cpp" />
-    <ClCompile Include="queen.cpp" />
-    <ClCompile Include="rook.cpp" />
+    <ClCompile Include="Pieces\queen.cpp" />
+    <ClCompile Include="Pieces\rook.cpp" />
     <ClCompile Include="wxImagePanel.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
