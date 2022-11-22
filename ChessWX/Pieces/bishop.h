@@ -1,5 +1,6 @@
 #pragma once
-class bishop
+#include "piece.h"
+class bishop : piece
 {
 };
 
