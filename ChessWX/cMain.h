@@ -3,6 +3,7 @@
 #include "wx/bitmap.h"
 #include "wx/event.h"
 #include "wxImagePanel.h"
+#include "wx/grid.h"
 
 class cMain : public wxFrame{
 typedef wxEvtHandler Inherited;
@@ -15,13 +16,15 @@ public:
 		MAIN_MENU,
 		NEW_GAME
 	};
-	
-	wxBoxSizer* windowSizer = nullptr;
-	wxButton* newGameButton = nullptr;
-	wxButton* atomicChessButton = nullptr;
-	wxPanel* buttonWrapper = nullptr;
 	GAME_STATE gameState;
 
+	wxBoxSizer* windowSizer = nullptr;
+	wxBoxSizer* menuSizer = nullptr;
+	wxButton* newGameButton = nullptr;
+	wxButton* atomicChessButton = nullptr;
+
+	wxBoxSizer* gameSizer = nullptr;
+	wxGridSizer* chessBoard = nullptr;
 	wxImage backgroundImg;
 	wxBitmap resized;
 	int h = -1;
