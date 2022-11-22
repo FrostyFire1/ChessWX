@@ -17,12 +17,59 @@ cMain::cMain() : wxFrame(nullptr, wxID_ANY, "SzAGHy", wxPoint(30,30), wxSize(128
 }
 
 cMain::~cMain(){
+    delete[] chessBoard;
+}
 
+void cMain::initVariables() {
+    windowSizer = new wxBoxSizer(wxHORIZONTAL);
+    menuSizer = new wxBoxSizer(wxVERTICAL);
+    newGameButton = new wxButton(this, 10001, "Nowa gra", wxDefaultPosition, wxSize(150, 60));
+    newGameButton->SetBackgroundColour(wxColour(100, 200, 100));
+    atomicChessButton = new wxButton(this, 10002, "Atomic Chess", wxDefaultPosition, wxSize(150, 60));
+    atomicChessButton->SetBackgroundColour(wxColour(100, 100, 200));
+
+    menuSizer->Add(0, 0, 5);
+    menuSizer->Add(newGameButton, 2, wxDEFAULT, 10);
+    menuSizer->Add(atomicChessButton, 2, wxDEFAULT, 10);
+    menuSizer->Add(0, 0, 5);
+
+    gameSizer = new wxBoxSizer(wxVERTICAL);
+    chessBoard = new wxGridSizer(8, 8, 0, 0);
+    boardButtons = new wxButton * [8 * 8];
+    for (int x = 0; x < 8; x++) {
+
+        for (int y = 0; y < 8; y++) {
+            boardButtons[y * 8 + x] = new wxButton(this, 20000 + (y * 8 + x), "", wxDefaultPosition, wxSize(50, 50));
+            boardButtons[y * 8 + x]->Bind(wxEVT_COMMAND_BUTTON_CLICKED, &cMain::boardSelect, this);
+            chessBoard->Add(boardButtons[y * 8 + x], 1, wxEXPAND | wxALL);
+        }
+    }
+
+    gameSizer->Add(0, 0, 2);
+    gameSizer->Add(chessBoard, 1, wxSHAPED, 0);
+
+    windowSizer->Add(menuSizer, 1, wxDEFAULT);
+    windowSizer->Add(gameSizer, 2, wxDEFAULT);
+    windowSizer->Hide(gameSizer);
+    this->SetSizer(windowSizer);
+    backgroundImg.LoadFile("img/background.png", wxBITMAP_TYPE_PNG);
+}
+
+void cMain::boardSelect(wxCommandEvent& evt) {
+    int trueId = evt.GetId() - 20000;
+    int x = trueId % 8;
+    int y = trueId / 8;
+    boardButtons[y*8+x]->SetLabel("click!");
+
+    evt.Skip();
 }
 
 void cMain::onButtonClicked(wxCommandEvent& evt){
     //windowSizer->Layout();
-   
+    windowSizer->Hide(menuSizer);
+    windowSizer->Show(gameSizer);
+    windowSizer->Layout();
+
     evt.Skip();
 }
 
@@ -70,35 +117,3 @@ void cMain::OnSize(wxSizeEvent& event) {
     event.Skip();
 }
 
-void cMain::initVariables() {
-    windowSizer = new wxBoxSizer(wxHORIZONTAL);
-    menuSizer = new wxBoxSizer(wxVERTICAL);
-    newGameButton = new wxButton(this, 10001, "Nowa gra", wxDefaultPosition, wxSize(150, 60));
-    newGameButton->SetBackgroundColour(wxColour(100, 200, 100));
-    atomicChessButton = new wxButton(this, 10002, "Atomic Chess", wxDefaultPosition, wxSize(150, 60));
-    atomicChessButton->SetBackgroundColour(wxColour(100, 100, 200));
-
-    menuSizer->Add(0, 0, 5);
-    menuSizer->Add(newGameButton, 2, wxDEFAULT, 10);
-    menuSizer->Add(atomicChessButton, 2, wxDEFAULT, 10);
-    menuSizer->Add(0, 0, 5);
-
-    gameSizer = new wxBoxSizer(wxVERTICAL);
-    chessBoard = new wxGridSizer(8, 8, 0, 0);
-    wxButton** boardButtons = new wxButton * [8 * 8];
-    for (int x = 0; x < 8; x++) {
-
-        for (int y = 0; y < 8; y++) {
-            boardButtons[y * 8 + x] = new wxButton(this, 20000 + (y * 8 + x), "",wxDefaultPosition, wxSize(50, 50));
-            chessBoard->Add(boardButtons[y * 8 + x], 1, wxEXPAND | wxALL);
-        }
-    }
-
-    gameSizer->Add(0, 0, 2);
-    gameSizer->Add(chessBoard, 1, wxSHAPED, 0);
-
-    windowSizer->Add(menuSizer, 1, wxDEFAULT);
-    windowSizer->Add(gameSizer, 2, wxDEFAULT);
-    this->SetSizer(windowSizer);
-    backgroundImg.LoadFile("img/background.png", wxBITMAP_TYPE_PNG);
-}

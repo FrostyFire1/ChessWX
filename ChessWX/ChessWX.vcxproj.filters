@@ -24,6 +24,9 @@
     <ClInclude Include="wxImagePanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Pieces\pawn.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cApp.cpp">
@@ -32,7 +35,7 @@
     <ClCompile Include="cMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Pieces\Pawn.cpp">
+    <ClCompile Include="Pieces\pawn.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="wxImagePanel.cpp">

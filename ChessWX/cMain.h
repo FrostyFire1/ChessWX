@@ -25,6 +25,7 @@ public:
 
 	wxBoxSizer* gameSizer = nullptr;
 	wxGridSizer* chessBoard = nullptr;
+	wxButton** boardButtons;
 	wxImage backgroundImg;
 	wxBitmap resized;
 	int h = -1;
@@ -36,6 +37,7 @@ public:
 	void render(wxDC& dc);
 	void OnSize(wxSizeEvent& evt);
 	void initVariables();
+	void boardSelect(wxCommandEvent& evt);
 
 	wxDECLARE_EVENT_TABLE();
 };
