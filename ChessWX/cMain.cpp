@@ -3,7 +3,6 @@
 
 wxBEGIN_EVENT_TABLE(cMain, wxFrame)
 	EVT_BUTTON(10001, onButtonClicked)
-	//EVT_ERASE_BACKGROUND(paintBackground)
     EVT_PAINT(paintEvent)
     EVT_SIZE(OnSize)
 wxEND_EVENT_TABLE()
@@ -12,25 +11,8 @@ wxEND_EVENT_TABLE()
 
 cMain::cMain() : wxFrame(nullptr, wxID_ANY, "SzAGHy", wxPoint(30,30), wxSize(1280,720)){
 	wxInitAllImageHandlers();
- 
-	windowSizer = new wxBoxSizer(wxVERTICAL);
-    logo = new wxBoxSizer(wxHORIZONTAL);
-    button = new wxBoxSizer(wxHORIZONTAL);
-    gameBtn = new wxBoxSizer(wxHORIZONTAL);
-    wxButton* gameButton = new wxButton(this,wxID_ANY,  "????", wxDefaultPosition, wxDefaultSize);
-    m_btn1 = new wxButton(this, 10001, "Nowa gra", wxPoint(0, 100), wxSize(100, 60));
-    m_btn1->SetBackgroundColour(wxColour(100, 200, 100));
+    initVariables();
 
-    button->Add(m_btn1);
-	windowSizer->Add(logo, 1, wxEXPAND, 10);
-    windowSizer->Add(button, 1, wxEXPAND, 10);
-    gameBtn->Add(gameButton, 1, wxEXPAND, 10);
-    windowSizer->Add(gameBtn, 1, wxEXPAND, 10);
-    windowSizer->Hide(gameBtn);
-
-	this->SetSizer(windowSizer);
-    backgroundImg.LoadFile("img/background.png", wxBITMAP_TYPE_PNG);
-	backgroundImage.LoadFile("img/background.png", wxBITMAP_TYPE_PNG);
 
 }
 
@@ -39,11 +21,7 @@ cMain::~cMain(){
 }
 
 void cMain::onButtonClicked(wxCommandEvent& evt){
-	//m_list1->AppendString(m_txt1->GetValue());
-	//m_txt1->SetValue("");
-	//evt.Skip();
-    windowSizer->Show(gameBtn);
-    windowSizer->Layout();
+    //windowSizer->Layout();
    
     evt.Skip();
 }
@@ -90,4 +68,21 @@ void cMain::OnSize(wxSizeEvent& event) {
     Refresh();
     //skip the event.
     event.Skip();
+}
+
+void cMain::initVariables() {
+    windowSizer = new wxBoxSizer(wxVERTICAL);
+    newGameButton = new wxButton(this, 10001, "Nowa gra", wxPoint(0, 100), wxSize(150, 60));
+    newGameButton->SetBackgroundColour(wxColour(100, 200, 100));
+    atomicChessButton = new wxButton(this, 10002, "Atomic Chess", wxDefaultPosition, wxSize(150, 60));
+    atomicChessButton->SetBackgroundColour(wxColour(100, 100, 200));
+
+    windowSizer->Add(0, 0, 5);
+    windowSizer->Add(newGameButton, 2, wxDEFAULT, 10);
+    windowSizer->Add(0, 0, 2);
+    windowSizer->Add(atomicChessButton, 2, wxDEFAULT, 10);
+    windowSizer->Add(0, 0, 5);
+
+    this->SetSizer(windowSizer);
+    backgroundImg.LoadFile("img/background.png", wxBITMAP_TYPE_PNG);
 }

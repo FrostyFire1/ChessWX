@@ -17,25 +17,22 @@ public:
 	};
 	
 	wxBoxSizer* windowSizer = nullptr;
-	wxBoxSizer* gameBtn = nullptr;
-	wxSizer* logo = nullptr;
-	wxSizer* button = nullptr;
-	wxButton* m_btn1 = nullptr;
-	wxTextCtrl* m_txt1 = nullptr;
-	wxListBox* m_list1 = nullptr;
-	wxImage backgroundImg;
-	wxBitmap backgroundImage, resized;
-	int h = -1;
-	int w = -1;
+	wxButton* newGameButton = nullptr;
+	wxButton* atomicChessButton = nullptr;
+	wxPanel* buttonWrapper = nullptr;
 	GAME_STATE gameState;
 
+	wxImage backgroundImg;
+	wxBitmap resized;
+	int h = -1;
+	int w = -1;
+
 	void onButtonClicked(wxCommandEvent& evt);
-	void paintBackground(wxEraseEvent& evt);
-	void paintBackground(wxSizeEvent& evt);
 	void paintEvent(wxPaintEvent& evt);
 	void paintNow();
 	void render(wxDC& dc);
 	void OnSize(wxSizeEvent& evt);
+	void initVariables();
 
 	wxDECLARE_EVENT_TABLE();
 };
