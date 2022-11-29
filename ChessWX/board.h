@@ -1,6 +1,11 @@
 #pragma once
 #include "Pieces/piece.h"
 #include "Pieces/pawn.h"
+#include "Pieces/rook.h"
+#include "Pieces/knight.h"
+#include "Pieces/bishop.h"
+#include "Pieces/queen.h"
+#include "Pieces/king.h"
 class board {
 
 public:
@@ -14,6 +19,5 @@ public:
 	void initEmpty();
 	void initBoard();
 	void initPawns();
-	void initWhite();
-	void initBlack();
+	void initMaterial(COLOR color);
 };

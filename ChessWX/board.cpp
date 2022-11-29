@@ -1,5 +1,6 @@
 #include "board.h"
-#include "Pieces/pawn.h"
+
+
 board::board(int width, int height){
 	this->width = width;
 	this->height = height;
@@ -20,19 +21,30 @@ void board::initEmpty() {
 }
 void board::initBoard() {
 	initPawns();
-	initWhite();
-	initBlack();
+	initMaterial(COLOR(WHITE));
+	initMaterial(COLOR(BLACK));
 }
 void board::initPawns() {
 
-	for (int y = 0; y < 8; y++) {
-		boardState[1 + y*height] = new pawn(COLOR(BLACK)); //Black pawn row
-		boardState[6 + y*height] = new pawn(COLOR(WHITE)); //White pawn row
+	for (int column = 0; column < 8; column++) {
+		boardState[1 + column*height] = new pawn(COLOR(BLACK)); //Black pawn row
+		boardState[6 + column*height] = new pawn(COLOR(WHITE)); //White pawn row
 	}
 }
-void board::initWhite() {
+void board::initMaterial(COLOR color) {
+	int row;
+	if (color == WHITE) row = 7;
+	else row = 0;
 
-}
-void board::initBlack() {
+	boardState[row + 0 * height] = new rook(color);
+	boardState[row + 7 * height] = new rook(color);
 
+	boardState[row + 1 * height] = new knight(color);
+	boardState[row + 6 * height] = new knight(color);
+
+	boardState[row + 2 * height] = new bishop(color);
+	boardState[row + 5 * height] = new bishop(color);
+
+	boardState[row + 3 * height] = new queen(color);
+	boardState[row + 4 * height] = new king(color);
 }

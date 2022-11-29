@@ -64,6 +64,8 @@ void cMain::initGame() {
             wxString displayText = gameBoard->boardState[y * 8 + x]->getDisplayText();
             boardButtons[y * 8 + x]->SetLabel(displayText);
             boardButtons[y * 8 + x]->SetFont(font);
+            if ((y + x) % 2) boardButtons[y * 8 + x]->SetBackgroundColour(wxColor(158, 83, 14));
+            else boardButtons[y * 8 + x]->SetBackgroundColour(wxColor(191, 132, 78));
 
             chessBoard->Add(boardButtons[y * 8 + x], 1, wxEXPAND | wxALL);
         }
