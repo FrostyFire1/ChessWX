@@ -1,6 +1,6 @@
 #pragma once
 #include "piece.h"
-class rook : piece{
+class rook : public piece{
 public:
 	rook(COLOR color);
 	~rook();

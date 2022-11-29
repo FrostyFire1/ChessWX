@@ -1,6 +1,6 @@
 #pragma once
 #include "piece.h"
-class king : piece
+class king : public piece
 {
 public:
 	king(COLOR color);
