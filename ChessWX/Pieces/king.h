@@ -3,7 +3,7 @@
 class king : piece
 {
 public:
-	king();
+	king(COLOR color);
 	~king();
 public:
 	wxString getDisplayText() override;

@@ -1,6 +1,9 @@
 ﻿#include "rook.h"
-rook::rook() {
+rook::rook(COLOR color) : piece(color){
 	displayTextWhite = wxT("♖");
 	displayTextBlack = wxT("♜");
 }
-wxString rook::getDisplayText() { return displayTextWhite; }
+wxString rook::getDisplayText() { 
+	if (color == WHITE) return displayTextWhite;
+	else return displayTextBlack;
+}

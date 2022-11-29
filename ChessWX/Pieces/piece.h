@@ -7,7 +7,7 @@ enum COLOR {
 };
 class piece {
 public:
-	piece();
+	piece(COLOR color);
 	~piece();
 public:
 	virtual wxString getDisplayText(); //virtual methods can be overriden, great for "downcasting"

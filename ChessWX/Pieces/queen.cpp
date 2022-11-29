@@ -1,6 +1,9 @@
 ﻿#include "queen.h"
-queen::queen() {
+queen::queen(COLOR color) : piece(color){
 	displayTextWhite = wxT("♕");
 	displayTextBlack = wxT("♛");
 }
-wxString queen::getDisplayText() { return displayTextWhite; }
+wxString queen::getDisplayText() { 
+	if (color == WHITE) return displayTextWhite;
+	else return displayTextBlack;
+}

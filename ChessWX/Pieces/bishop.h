@@ -3,7 +3,7 @@
 class bishop : piece
 {
 public:
-	bishop();
+	bishop(COLOR color);
 	~bishop();
 public:
 	wxString getDisplayText() override;

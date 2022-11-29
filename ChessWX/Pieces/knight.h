@@ -3,7 +3,7 @@
 class knight : piece
 {
 public:
-	knight();
+	knight(COLOR color);
 	~knight();
 public:
 	wxString getDisplayText() override;

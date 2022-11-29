@@ -3,7 +3,7 @@
 class queen : piece
 {
 public:
-	queen();
+	queen(COLOR color);
 	~queen();
 public:
 	wxString getDisplayText() override;

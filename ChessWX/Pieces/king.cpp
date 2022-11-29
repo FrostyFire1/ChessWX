@@ -1,6 +1,9 @@
 ﻿#include "king.h"
-king::king() {
+king::king(COLOR color) : piece(color){
 	displayTextWhite = wxT("♔");
 	displayTextBlack = wxT("♚");
 }
-wxString king::getDisplayText() { return displayTextWhite; }
+wxString king::getDisplayText() { 
+	if (color == WHITE) return displayTextWhite;
+	else return displayTextBlack;
+}

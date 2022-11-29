@@ -1,6 +1,9 @@
 ﻿#include "knight.h"
-knight::knight() {
+knight::knight(COLOR color) : piece(color){
 	displayTextWhite = wxT("♘");
 	displayTextBlack = wxT("♞");
 }
-wxString knight::getDisplayText() { return displayTextWhite; }
+wxString knight::getDisplayText() {
+	if (color == WHITE) return displayTextWhite;
+	else return displayTextBlack;
+}

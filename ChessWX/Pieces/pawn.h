@@ -3,7 +3,7 @@
 #include <string>
 class pawn : public piece{
 public:
-	pawn();
+	pawn(COLOR color);
 	~pawn();
 public:
 	wxString getDisplayText() override;

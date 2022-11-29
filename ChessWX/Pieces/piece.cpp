@@ -1,9 +1,14 @@
 #include "piece.h"
 
-piece::piece() {
-	displayTextWhite = wxT("Unknown");
+piece::piece(COLOR color) {
+	displayTextWhite = wxT("");
+	displayTextBlack = wxT("");
+	this->color = color;
 }
 piece::~piece() {
 
 }
-wxString piece::getDisplayText() { return displayTextWhite; }
+wxString piece::getDisplayText() { 
+	if (color == WHITE) return displayTextWhite;
+	else return displayTextBlack;
+}
