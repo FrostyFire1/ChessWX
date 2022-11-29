@@ -48,16 +48,27 @@ void cMain::initMenu() {
 void cMain::initGame() {
     gameSizer = new wxBoxSizer(wxVERTICAL);
     chessBoard = new wxGridSizer(8, 8, 0, 0);
+    gameBoard = new board(8, 8);
     boardButtons = new wxButton * [8 * 8]; //2D array, simulates chess board
+
+    wxFont font = GetFont();
+    font.SetPointSize(25);
+
     for (int x = 0; x < 8; x++) {
 
         for (int y = 0; y < 8; y++) {
+             
             boardButtons[y * 8 + x] = new wxButton(this, 20000 + (y * 8 + x), "", wxDefaultPosition, wxSize(50, 50));
             boardButtons[y * 8 + x]->Bind(wxEVT_COMMAND_BUTTON_CLICKED, &cMain::boardSelect, this); //bind cMain::boardSelect to button
+
+            wxString displayText = gameBoard->boardState[y * 8 + x]->getDisplayText();
+            boardButtons[y * 8 + x]->SetLabel(displayText);
+            boardButtons[y * 8 + x]->SetFont(font);
+
             chessBoard->Add(boardButtons[y * 8 + x], 1, wxEXPAND | wxALL);
         }
     }
-    gameBoard = new board(8, 8);
+
     gameSizer->Add(0, 0, 2); //Add spacing
     gameSizer->Add(chessBoard, 1, wxSHAPED, 0);
 }
@@ -66,13 +77,6 @@ void cMain::boardSelect(wxCommandEvent& evt) {
     int trueId = evt.GetId() - 20000;
     int x = trueId % 8;
     int y = trueId / 8;
-    wxString displayText = gameBoard->boardState[y * 8 + x]->getDisplayText();
-    wxButton* curButton = boardButtons[y * 8 + x];
-    wxFont font = curButton->GetFont();
-    font.SetPointSize(25);
-    curButton->SetFont(font);
-    curButton->SetLabel(displayText);
-
     evt.Skip();
 }
 
