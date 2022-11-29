@@ -1,1 +1,5 @@
-#include "rook.h"
+﻿#include "rook.h"
+rook::rook() {
+	displayTextWhite = wxT("♖");
+	displayTextBlack = wxT("♜");
+}

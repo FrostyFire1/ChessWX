@@ -1,6 +1,6 @@
-﻿#include "piece.h"
-#include "pawn.h"
+﻿#include "pawn.h"
 pawn::pawn() : piece(){
-	displayText = "pawn";
+	displayTextWhite = wxT("♙");
+	displayTextBlack = wxT("♟︎");
 }
-std::string pawn::getDisplayText(){ return displayText; }
+wxString pawn::getDisplayText(){ return displayTextWhite; }

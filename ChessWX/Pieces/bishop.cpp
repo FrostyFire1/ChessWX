@@ -1,1 +1,5 @@
-#include "bishop.h"
+﻿#include "bishop.h"
+bishop::bishop() {
+	displayTextWhite = wxT("♗");
+	displayTextBlack = wxT("♝");
+}

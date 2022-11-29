@@ -1,4 +1,9 @@
 #include "piece.h"
 
-void piece::f() {}
-std::string piece::getDisplayText() { return displayText; }
+piece::piece() {
+	displayTextWhite = wxT("Unknown");
+}
+piece::~piece() {
+
+}
+wxString piece::getDisplayText() { return displayTextWhite; }

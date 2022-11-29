@@ -1,1 +1,5 @@
-#include "knight.h"
+﻿#include "knight.h"
+knight::knight() {
+	displayTextWhite = wxT("♘");
+	displayTextBlack = wxT("♞");
+}

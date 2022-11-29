@@ -1,7 +1,16 @@
 #pragma once
 #include <string>
+#include "wx/wx.h"
+enum COLOR {
+	WHITE,
+	BLACK
+};
 class piece {
 public:
-	virtual std::string getDisplayText(); //virtual methods can be override, great for "downcasting"
-	std::string displayText = "piece";
+	piece();
+	~piece();
+public:
+	virtual wxString getDisplayText(); //virtual methods can be overriden, great for "downcasting"
+	wxString displayTextWhite, displayTextBlack;
+	COLOR color;
 };

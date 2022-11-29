@@ -6,6 +6,5 @@ public:
 	pawn();
 	~pawn();
 public:
-	std::string displayText;
-	std::string getDisplayText() override;
+	wxString getDisplayText() override;
 };
