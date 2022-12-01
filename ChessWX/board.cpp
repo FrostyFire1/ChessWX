@@ -55,7 +55,7 @@ void board::initMaterial(COLOR color) {
 }
 
 std::vector<std::array<int, 2>> board::validMoves(Coords startPos, Coords finalPos) {
-	std::vector<std::array<int, 2>> potentialMoves = boardState[arrIndex(startPos)]->generateMoves(boardState, startPos.x, startPos.y);
+	std::vector<std::array<int, 2>> potentialMoves = boardState[arrIndex(startPos)]->generateMoves(boardState,lastMoved, startPos.x, startPos.y);
 	return potentialMoves; //TODO: Check for mate, discovery attacks etc.
 }
 
@@ -70,6 +70,34 @@ bool board::moveIsValid(Coords startPos, Coords finalPos) {
 	return false;
 }
 void board::move(Coords start, Coords end) {
+	piece* movedPiece = boardState[arrIndex(start)];
+	if (movedPiece->type == PAWN) {
+		//Check for en passant
+		if(boardState[arrIndex(end)]->type == PLACEHOLDER) checkEnPassant(movedPiece, end);
+
+		int distance = abs((start.x - end.x) + (start.y - end.y));
+		movedPiece->lastMoveDistance = distance;
+		movedPiece->hasMoved = true;
+	}
 	boardState[arrIndex(end)] = boardState[arrIndex(start)];
 	boardState[arrIndex(start)] = new piece(COLOR(UNKNOWN));
+	lastMoved = boardState[arrIndex(end)];
+}
+
+void board::checkEnPassant(piece* pawn, Coords end) {
+	piece* potentialPawn;
+	int direction;
+	if (pawn->color == WHITE) direction = 1;
+	else direction = -1;
+	Coords enPassant = Coords{ end.x + direction, end.y};
+
+	if (!isOutOfBounds(enPassant.x, enPassant.y)){
+		potentialPawn = boardState[arrIndex(enPassant)];
+		if (potentialPawn->type == PAWN && potentialPawn->color != pawn->color && potentialPawn == lastMoved) {
+			boardState[arrIndex(enPassant)] = new piece(COLOR(UNKNOWN));
+			return;
+		}
+	}
+	
+
 }

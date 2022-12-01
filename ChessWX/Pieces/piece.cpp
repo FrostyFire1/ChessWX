@@ -1,6 +1,7 @@
 #include "piece.h"
 
 piece::piece(COLOR color) {
+	type = PLACEHOLDER;
 	displayTextWhite = wxT("");
 	displayTextBlack = wxT("");
 	this->color = color;
@@ -12,7 +13,7 @@ wxString piece::getDisplayText() {
 	if (color == WHITE) return displayTextWhite;
 	else return displayTextBlack;
 }
-std::vector<std::array<int, 2>> piece::generateMoves(piece** _, int __, int ___) {
+std::vector<std::array<int, 2>> piece::generateMoves(piece** _,piece* __, int ___, int ____) {
 	std::vector<std::array<int, 2>> moves;
 	return moves;
 }

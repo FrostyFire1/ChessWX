@@ -87,7 +87,7 @@ void cMain::handleSelection(int x, int y) {
         startPos.x = x;
         startPos.y = y;
         moveState = SELECTED;
-        std::vector<std::array<int, 2>> validMoves = gameBoard->boardState[arrIndex(x, y, 8)]->generateMoves(gameBoard->boardState,x,y);
+        std::vector<std::array<int, 2>> validMoves = gameBoard->boardState[arrIndex(x, y, 8)]->generateMoves(gameBoard->boardState,gameBoard->lastMoved,x,y);
         highlightValidMoves(validMoves);
     }
 

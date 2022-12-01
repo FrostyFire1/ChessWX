@@ -1,5 +1,6 @@
 ﻿#include "rook.h"
 rook::rook(COLOR color) : piece(color){
+	type = ROOK;
 	displayTextWhite = wxT("♖");
 	displayTextBlack = wxT("♜");
 }

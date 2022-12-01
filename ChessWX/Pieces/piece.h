@@ -8,14 +8,26 @@ enum COLOR {
 	BLACK,
 	UNKNOWN,
 };
+enum TYPE {
+	PAWN,
+	ROOK,
+	KNIGHT,
+	BISHOP,
+	QUEEN,
+	KING,
+	PLACEHOLDER,
+};
 class piece {
 public:
 	piece(COLOR color);
 	~piece();
 public:
 	virtual wxString getDisplayText(); //virtual methods can be overriden, great for "downcasting"
-	virtual std::vector<std::array<int, 2>> generateMoves(piece**, int, int);
+	virtual std::vector<std::array<int, 2>> generateMoves(piece**, piece*, int, int);
 	int arrIndex(int, int, int);
 	wxString displayTextWhite, displayTextBlack;
+	int lastMoveDistance;
+	bool hasMoved;
+	TYPE type;
 	COLOR color;
 };

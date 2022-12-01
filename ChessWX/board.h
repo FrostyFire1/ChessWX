@@ -19,12 +19,13 @@ public:
 	};
 	int pos1 = -1, pos2 = -1, width, height;
 	piece** boardState;
-	
+	piece* lastMoved;
 	void initEmpty();
 	void initBoard();
 	void initPawns();
 	void initMaterial(COLOR color);
 	void move(Coords, Coords);
+	void checkEnPassant(piece*, Coords);
 	bool moveIsValid(Coords, Coords);
 	std::vector<std::array<int, 2>> validMoves(Coords, Coords);
 	int arrIndex(Coords);

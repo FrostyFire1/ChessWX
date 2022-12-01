@@ -7,5 +7,5 @@ public:
 	~pawn();
 public:
 	wxString getDisplayText() override;
-	std::vector<std::array<int, 2>> generateMoves(piece**, int, int) override;
+	std::vector<std::array<int, 2>> generateMoves(piece**,piece*, int, int) override;
 };
