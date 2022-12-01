@@ -3,7 +3,8 @@
 #include "wx/wx.h"
 enum COLOR {
 	WHITE,
-	BLACK
+	BLACK,
+	UNKNOWN,
 };
 class piece {
 public:

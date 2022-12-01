@@ -3,6 +3,7 @@
 int board::arrIndex(int x, int y) {
 	return y * height + x;
 }
+
 board::board(){
 	this->width = 8;
 	this->height = 8;
@@ -17,15 +18,17 @@ board::~board() {
 void board::initEmpty() {
 	for (int x = 0; x < width; x++) {
 		for (int y = 0; y < height; y++) {
-			boardState[arrIndex(x,y)] = new piece(COLOR(WHITE));
+			boardState[arrIndex(x,y)] = new piece(COLOR(UNKNOWN));
 		}
 	}
 }
+
 void board::initBoard() {
 	initPawns();
 	initMaterial(COLOR(WHITE));
 	initMaterial(COLOR(BLACK));
 }
+
 void board::initPawns() {
 
 	for (int column = 0; column < 8; column++) {
@@ -33,6 +36,7 @@ void board::initPawns() {
 		boardState[arrIndex(6, column)] = new pawn(COLOR(WHITE)); //White pawn row
 	}
 }
+
 void board::initMaterial(COLOR color) {
 	int row;
 	if (color == WHITE) row = 7;
@@ -49,4 +53,9 @@ void board::initMaterial(COLOR color) {
 
 	boardState[arrIndex(row, 3)] = new queen(color);
 	boardState[arrIndex(row, 4)] = new king(color);
+}
+
+void board::move(int start, int end) {
+	boardState[end] = boardState[start];
+	boardState[start] = new piece(COLOR(UNKNOWN));
 }

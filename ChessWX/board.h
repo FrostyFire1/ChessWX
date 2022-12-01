@@ -20,5 +20,6 @@ public:
 	void initBoard();
 	void initPawns();
 	void initMaterial(COLOR color);
+	void move(int, int);
 	int arrIndex(int, int);
 };

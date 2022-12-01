@@ -97,6 +97,10 @@ void cMain::handleSelection(int x, int y) {
     }
 }
 void cMain::movePiece(int startPos[2], int finalPos[2]) {
+    int startPointer = gameBoard->arrIndex(startPos[0], startPos[1]);
+    int endPointer = gameBoard->arrIndex(finalPos[0], finalPos[1]);
+    gameBoard->move(startPointer, endPointer);
+    renderBoard();
 }
 
 void cMain::onButtonClicked(wxCommandEvent& evt){
