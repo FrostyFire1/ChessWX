@@ -84,27 +84,19 @@ void cMain::boardSelect(wxCommandEvent& evt) {
 }
 
 void cMain::handleSelection(int x, int y) {
-    if (desiredMove[0][0] == -1) {
-        desiredMove[0][0] = x;
-        desiredMove[0][1] = y;
+    if (moveState == WAITING_FOR_SELECTION) {
+        startPos[0] = x;
+        startPos[1] = y;
+        moveState = SELECTED;
     }
-    else if (desiredMove[1][0] == -1){
-        desiredMove[1][0] = x;
-        desiredMove[1][1] = y;
-        movePiece(desiredMove);
-        resetDesiredMove();
+    else if (moveState == SELECTED) {
+        finalPos[0] = x;
+        finalPos[1] = y;
+        movePiece(startPos, finalPos);
+        moveState = WAITING_FOR_SELECTION;
     }
 }
-void cMain::movePiece(int desiredMove[][2]) {
-    int start[2] = { desiredMove[0][0],desiredMove[0][1] };
-    int end[2] = { desiredMove[1][0],desiredMove[1][1] };
-}
-
-void cMain::resetDesiredMove() {
-    desiredMove[0][0] = -1;
-    desiredMove[0][1] = -1;
-    desiredMove[1][0] = -1;
-    desiredMove[1][1] = -1;
+void cMain::movePiece(int startPos[2], int finalPos[2]) {
 }
 
 void cMain::onButtonClicked(wxCommandEvent& evt){

@@ -12,11 +12,19 @@ public:
 	~cMain();
 
 public:
-	enum GAME_STATE {
+	enum WINDOW_STATE {
 		MAIN_MENU,
 		NEW_GAME
 	};
-	GAME_STATE gameState;
+	enum MOVE_STATE {
+		WAITING_FOR_SELECTION,
+		SELECTED,
+		MAKE_MOVE,
+	};
+	WINDOW_STATE windowState;
+	MOVE_STATE moveState = WAITING_FOR_SELECTION;
+	int startPos[2];
+	int finalPos[2];
 
 	wxBoxSizer* windowSizer = nullptr;
 	wxBoxSizer* menuSizer = nullptr;
@@ -32,7 +40,6 @@ public:
 	int w = -1;
 
 	board* gameBoard = nullptr;
-	int desiredMove[2][2] = { {-1,-1},{-1,-1} };
 	COLOR curPlayer = WHITE;
 
 	void onButtonClicked(wxCommandEvent& evt);
@@ -46,7 +53,7 @@ public:
 	void initGame();
 	void boardSelect(wxCommandEvent& evt);
 	void handleSelection(int, int);
-	void movePiece(int[][2]);
+	void movePiece(int[2], int[2]);
 	void resetDesiredMove();
 
 	wxDECLARE_EVENT_TABLE();
