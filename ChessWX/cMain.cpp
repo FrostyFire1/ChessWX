@@ -94,8 +94,20 @@ void cMain::handleSelection(int x, int y) {
     else if (moveState == SELECTED) { //One of the pieces is already selected
         finalPos.x = x;
         finalPos.y = y;
+
+        piece* potentialNewSelection = gameBoard->boardState[arrIndex(finalPos.x, finalPos.y, 8)];
+        if (potentialNewSelection->color == curPlayer) {
+            renderBoard();
+            startPos.x = x;
+            startPos.y = y;
+            std::vector<std::array<int, 2>> validMoves = gameBoard->boardState[arrIndex(x, y, 8)]->generateMoves(gameBoard->boardState, gameBoard->lastMoved, x, y);
+            highlightValidMoves(validMoves);
+            return;
+        }
+
         if (!(gameBoard->moveIsValid(startPos, finalPos))) { //Check if move is legal
             moveState = WAITING_FOR_SELECTION; //Move is illegal - let the player select their move again
+            renderBoard();
             return;
         }
 
