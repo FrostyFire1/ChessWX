@@ -92,6 +92,10 @@ void cMain::handleSelection(int x, int y) {
     else if (moveState == SELECTED) {
         finalPos[0] = x;
         finalPos[1] = y;
+        if (!(gameBoard->moveIsValid(startPos, finalPos))) {
+            moveState = WAITING_FOR_SELECTION;
+            return;
+        }
         movePiece(startPos, finalPos);
         moveState = WAITING_FOR_SELECTION;
     }

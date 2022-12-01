@@ -21,5 +21,6 @@ public:
 	void initPawns();
 	void initMaterial(COLOR color);
 	void move(int, int);
+	bool moveIsValid(int[2], int[2]);
 	int arrIndex(int, int);
 };

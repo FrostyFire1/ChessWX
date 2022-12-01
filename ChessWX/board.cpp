@@ -55,6 +55,9 @@ void board::initMaterial(COLOR color) {
 	boardState[arrIndex(row, 4)] = new king(color);
 }
 
+bool board::moveIsValid(int startPos[2], int finalPos[2]) {
+	return true;
+}
 void board::move(int start, int end) {
 	boardState[end] = boardState[start];
 	boardState[start] = new piece(COLOR(UNKNOWN));
