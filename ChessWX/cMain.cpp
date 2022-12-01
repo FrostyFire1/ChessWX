@@ -84,7 +84,8 @@ void cMain::boardSelect(wxCommandEvent& evt) {
 }
 
 void cMain::handleSelection(int x, int y) {
-    if (moveState == WAITING_FOR_SELECTION) {
+    piece* selectedPiece = gameBoard->boardState[arrIndex(x, y, 8)];
+    if (moveState == WAITING_FOR_SELECTION && curPlayer == selectedPiece->color) {
         startPos[0] = x;
         startPos[1] = y;
         moveState = SELECTED;
@@ -96,8 +97,11 @@ void cMain::handleSelection(int x, int y) {
             moveState = WAITING_FOR_SELECTION;
             return;
         }
+
         movePiece(startPos, finalPos);
         moveState = WAITING_FOR_SELECTION;
+        if (curPlayer == WHITE) curPlayer = BLACK;
+        else curPlayer = WHITE;
     }
 }
 void cMain::movePiece(int startPos[2], int finalPos[2]) {
