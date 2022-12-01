@@ -6,7 +6,9 @@ wxBEGIN_EVENT_TABLE(cMain, wxFrame)
     EVT_SIZE(OnSize)
 wxEND_EVENT_TABLE()
 
-
+int arrIndex(int x, int y, int height) {
+    return y * height + x;
+}
 
 cMain::cMain() : wxFrame(nullptr, wxID_ANY, "SzAGHy", wxPoint(30,30), wxSize(1280,720)){
 	wxInitAllImageHandlers();
@@ -48,7 +50,7 @@ void cMain::initMenu() {
 void cMain::initGame() {
     gameSizer = new wxBoxSizer(wxVERTICAL);
     chessBoard = new wxGridSizer(8, 8, 0, 0);
-    gameBoard = new board(8, 8);
+    gameBoard = new board();
     boardButtons = new wxButton * [8 * 8]; //2D array, simulates chess board
 
     wxFont font = GetFont();
@@ -58,19 +60,17 @@ void cMain::initGame() {
 
         for (int y = 0; y < 8; y++) {
              
-            boardButtons[y * 8 + x] = new wxButton(this, 20000 + (y * 8 + x), "", wxDefaultPosition, wxSize(50, 50));
-            boardButtons[y * 8 + x]->Bind(wxEVT_COMMAND_BUTTON_CLICKED, &cMain::boardSelect, this); //bind cMain::boardSelect to button
+            boardButtons[arrIndex(x,y,8)] = new wxButton(this, 20000 + (arrIndex(x,y,8)), "", wxDefaultPosition, wxSize(50, 50), wxNO_BORDER);
+            boardButtons[arrIndex(x,y,8)]->Bind(wxEVT_COMMAND_BUTTON_CLICKED, &cMain::boardSelect, this); //bind cMain::boardSelect to button
+            boardButtons[arrIndex(x,y,8)]->SetFont(font);
 
-            wxString displayText = gameBoard->boardState[y * 8 + x]->getDisplayText();
-            boardButtons[y * 8 + x]->SetLabel(displayText);
-            boardButtons[y * 8 + x]->SetFont(font);
-            if ((y + x) % 2) boardButtons[y * 8 + x]->SetBackgroundColour(wxColor(158, 83, 14));
-            else boardButtons[y * 8 + x]->SetBackgroundColour(wxColor(191, 132, 78));
+            if ((y + x) % 2) boardButtons[arrIndex(x,y,8)]->SetBackgroundColour(wxColor(158, 83, 14));
+            else boardButtons[arrIndex(x,y,8)]->SetBackgroundColour(wxColor(191, 132, 78));
 
-            chessBoard->Add(boardButtons[y * 8 + x], 1, wxEXPAND | wxALL);
+            chessBoard->Add(boardButtons[arrIndex(x,y,8)], 1, wxEXPAND | wxALL);
         }
     }
-
+    renderBoard();
     gameSizer->Add(0, 0, 2); //Add spacing
     gameSizer->Add(chessBoard, 1, wxSHAPED, 0);
 }
@@ -129,6 +129,15 @@ void cMain::render(wxDC& dc)
     }
 }
 
+void cMain::renderBoard() {
+    for (int x = 0; x < gameBoard->width; x++) {
+        for (int y = 0; y < gameBoard->height; y++) {
+            wxString displayText = gameBoard->boardState[arrIndex(x, y, 8)]->getDisplayText();
+            boardButtons[arrIndex(x, y, 8)]->SetLabel(displayText);
+        }
+    }
+
+}
 void cMain::OnSize(wxSizeEvent& event) {
     Refresh();
     //skip the event.

@@ -30,12 +30,15 @@ public:
 	wxBitmap resized;
 	int h = -1;
 	int w = -1;
+
 	board* gameBoard = nullptr;
+	int desiredMove[2][2] = { {-1,-1},{-1,-1} };
 
 	void onButtonClicked(wxCommandEvent& evt);
 	void paintEvent(wxPaintEvent& evt);
 	void paintNow();
 	void render(wxDC& dc);
+	void renderBoard();
 	void OnSize(wxSizeEvent& evt);
 	void initVariables();
 	void initMenu();

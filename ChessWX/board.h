@@ -9,7 +9,7 @@
 class board {
 
 public:
-	board(int width, int height);
+	board();
 	~board();
 
 public:
@@ -20,4 +20,5 @@ public:
 	void initBoard();
 	void initPawns();
 	void initMaterial(COLOR color);
+	int arrIndex(int, int);
 };
