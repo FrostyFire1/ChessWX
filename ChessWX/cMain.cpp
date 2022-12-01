@@ -95,8 +95,7 @@ void cMain::handleSelection(int x, int y) {
         finalPos.x = x;
         finalPos.y = y;
 
-        piece* potentialNewSelection = gameBoard->boardState[arrIndex(finalPos.x, finalPos.y, 8)];
-        if (potentialNewSelection->color == curPlayer) {
+        if (selectedPiece->color == curPlayer) {
             renderBoard();
             startPos.x = x;
             startPos.y = y;
