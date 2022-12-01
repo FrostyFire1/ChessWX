@@ -13,6 +13,10 @@ public:
 	~board();
 
 public:
+	struct Coords {
+		int x;
+		int y;
+	};
 	int pos1 = -1, pos2 = -1, width, height;
 	piece** boardState;
 	
@@ -20,7 +24,7 @@ public:
 	void initBoard();
 	void initPawns();
 	void initMaterial(COLOR color);
-	void move(int, int);
-	bool moveIsValid(int[2], int[2]);
-	int arrIndex(int, int);
+	void move(Coords, Coords);
+	bool moveIsValid(Coords, Coords);
+	int arrIndex(Coords);
 };

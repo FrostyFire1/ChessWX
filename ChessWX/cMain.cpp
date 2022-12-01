@@ -64,7 +64,7 @@ void cMain::initGame() {
             boardButtons[arrIndex(x,y,8)]->Bind(wxEVT_COMMAND_BUTTON_CLICKED, &cMain::boardSelect, this); //bind cMain::boardSelect to button
             boardButtons[arrIndex(x,y,8)]->SetFont(font);
 
-            if ((y + x) % 2) boardButtons[arrIndex(x,y,8)]->SetBackgroundColour(wxColor(158, 83, 14));
+            if ((y + x) % 2) boardButtons[arrIndex(x,y,8)]->SetBackgroundColour(wxColor(158, 83, 14)); //Alternate the bg color
             else boardButtons[arrIndex(x,y,8)]->SetBackgroundColour(wxColor(191, 132, 78));
 
             chessBoard->Add(boardButtons[arrIndex(x,y,8)], 1, wxEXPAND | wxALL);
@@ -85,29 +85,31 @@ void cMain::boardSelect(wxCommandEvent& evt) {
 
 void cMain::handleSelection(int x, int y) {
     piece* selectedPiece = gameBoard->boardState[arrIndex(x, y, 8)];
-    if (moveState == WAITING_FOR_SELECTION && curPlayer == selectedPiece->color) {
-        startPos[0] = x;
-        startPos[1] = y;
+    //current player is represented by the COLOR enum. comparing it to the selected piece's color verifies that this is the player's piece
+    if (moveState == WAITING_FOR_SELECTION && curPlayer == selectedPiece->color) { //Player selected a valid piece
+        startPos.x = x;
+        startPos.y = y;
         moveState = SELECTED;
+
     }
-    else if (moveState == SELECTED) {
-        finalPos[0] = x;
-        finalPos[1] = y;
-        if (!(gameBoard->moveIsValid(startPos, finalPos))) {
-            moveState = WAITING_FOR_SELECTION;
+
+    else if (moveState == SELECTED) { //One of the pieces is already selected
+        finalPos.x = x;
+        finalPos.y = y;
+        if (!(gameBoard->moveIsValid(startPos, finalPos))) { //Check if move is legal
+            moveState = WAITING_FOR_SELECTION; //Move is illegal - let the player select their move again
             return;
         }
 
         movePiece(startPos, finalPos);
         moveState = WAITING_FOR_SELECTION;
-        if (curPlayer == WHITE) curPlayer = BLACK;
+        if (curPlayer == WHITE) curPlayer = BLACK; //Switch players
         else curPlayer = WHITE;
     }
 }
-void cMain::movePiece(int startPos[2], int finalPos[2]) {
-    int startPointer = gameBoard->arrIndex(startPos[0], startPos[1]);
-    int endPointer = gameBoard->arrIndex(finalPos[0], finalPos[1]);
-    gameBoard->move(startPointer, endPointer);
+
+void cMain::movePiece(board::Coords startPos, board::Coords finalPos) {
+    gameBoard->move(startPos, finalPos);
     renderBoard();
 }
 

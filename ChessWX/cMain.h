@@ -23,8 +23,7 @@ public:
 	};
 	WINDOW_STATE windowState;
 	MOVE_STATE moveState = WAITING_FOR_SELECTION;
-	int startPos[2];
-	int finalPos[2];
+	board::Coords startPos,finalPos;
 
 	wxBoxSizer* windowSizer = nullptr;
 	wxBoxSizer* menuSizer = nullptr;
@@ -53,7 +52,7 @@ public:
 	void initGame();
 	void boardSelect(wxCommandEvent& evt);
 	void handleSelection(int, int);
-	void movePiece(int[2], int[2]);
+	void movePiece(board::Coords, board::Coords);
 	void resetDesiredMove();
 
 	wxDECLARE_EVENT_TABLE();

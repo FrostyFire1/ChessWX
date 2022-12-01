@@ -1,7 +1,7 @@
 #include "board.h"
 
-int board::arrIndex(int x, int y) {
-	return y * height + x;
+int board::arrIndex(Coords coords) {
+	return coords.y * height + coords.x;
 }
 
 board::board(){
@@ -18,7 +18,7 @@ board::~board() {
 void board::initEmpty() {
 	for (int x = 0; x < width; x++) {
 		for (int y = 0; y < height; y++) {
-			boardState[arrIndex(x,y)] = new piece(COLOR(UNKNOWN));
+			boardState[arrIndex(Coords{ x,y })] = new piece(COLOR(UNKNOWN));
 		}
 	}
 }
@@ -32,8 +32,8 @@ void board::initBoard() {
 void board::initPawns() {
 
 	for (int column = 0; column < 8; column++) {
-		boardState[arrIndex(1, column)] = new pawn(COLOR(BLACK)); //Black pawn row
-		boardState[arrIndex(6, column)] = new pawn(COLOR(WHITE)); //White pawn row
+		boardState[arrIndex(Coords{ 1, column })] = new pawn(COLOR(BLACK)); //Black pawn row
+		boardState[arrIndex(Coords{ 6, column })] = new pawn(COLOR(WHITE)); //White pawn row
 	}
 }
 
@@ -42,23 +42,23 @@ void board::initMaterial(COLOR color) {
 	if (color == WHITE) row = 7;
 	else row = 0;
 
-	boardState[arrIndex(row, 0)] = new rook(color);
-	boardState[arrIndex(row, 7)] = new rook(color);
+	boardState[arrIndex(Coords{row, 0})] = new rook(color);
+	boardState[arrIndex(Coords{row, 7})] = new rook(color);
 
-	boardState[arrIndex(row, 1)] = new knight(color);
-	boardState[arrIndex(row, 6)] = new knight(color);
+	boardState[arrIndex(Coords{row, 1})] = new knight(color);
+	boardState[arrIndex(Coords{row, 6})] = new knight(color);
 
-	boardState[arrIndex(row, 2)] = new bishop(color);
-	boardState[arrIndex(row, 5)] = new bishop(color);
+	boardState[arrIndex(Coords{row, 2})] = new bishop(color);
+	boardState[arrIndex(Coords{row, 5})] = new bishop(color);
 
-	boardState[arrIndex(row, 3)] = new queen(color);
-	boardState[arrIndex(row, 4)] = new king(color);
+	boardState[arrIndex(Coords{row, 3})] = new queen(color);
+	boardState[arrIndex(Coords{row, 4})] = new king(color);
 }
 
-bool board::moveIsValid(int startPos[2], int finalPos[2]) {
+bool board::moveIsValid(Coords startPos, Coords finalPos) {
 	return true;
 }
-void board::move(int start, int end) {
-	boardState[end] = boardState[start];
-	boardState[start] = new piece(COLOR(UNKNOWN));
+void board::move(Coords start, Coords end) {
+	boardState[arrIndex(end)] = boardState[arrIndex(start)];
+	boardState[arrIndex(start)] = new piece(COLOR(UNKNOWN));
 }
