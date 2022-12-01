@@ -1,5 +1,4 @@
 #include "board.h"
-
 int board::arrIndex(Coords coords) {
 	return coords.y * height + coords.x;
 }
@@ -56,6 +55,7 @@ void board::initMaterial(COLOR color) {
 }
 
 bool board::moveIsValid(Coords startPos, Coords finalPos) {
+	std::vector<int[2]> potentialMoves = boardState[arrIndex(startPos)]->generateMoves(boardState);
 	return true;
 }
 void board::move(Coords start, Coords end) {

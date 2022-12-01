@@ -7,5 +7,6 @@ public:
 	~knight();
 public:
 	wxString getDisplayText() override;
+	std::vector<int[2]> generateMoves(piece**, int, int) override;
 };
 
