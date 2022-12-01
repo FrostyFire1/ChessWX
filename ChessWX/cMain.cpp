@@ -79,7 +79,32 @@ void cMain::boardSelect(wxCommandEvent& evt) {
     int trueId = evt.GetId() - 20000;
     int x = trueId % 8;
     int y = trueId / 8;
+    handleSelection(x,y);
     evt.Skip();
+}
+
+void cMain::handleSelection(int x, int y) {
+    if (desiredMove[0][0] == -1) {
+        desiredMove[0][0] = x;
+        desiredMove[0][1] = y;
+    }
+    else if (desiredMove[1][0] == -1){
+        desiredMove[1][0] = x;
+        desiredMove[1][1] = y;
+        movePiece(desiredMove);
+        resetDesiredMove();
+    }
+}
+void cMain::movePiece(int desiredMove[][2]) {
+    int start[2] = { desiredMove[0][0],desiredMove[0][1] };
+    int end[2] = { desiredMove[1][0],desiredMove[1][1] };
+}
+
+void cMain::resetDesiredMove() {
+    desiredMove[0][0] = -1;
+    desiredMove[0][1] = -1;
+    desiredMove[1][0] = -1;
+    desiredMove[1][1] = -1;
 }
 
 void cMain::onButtonClicked(wxCommandEvent& evt){

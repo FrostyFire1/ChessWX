@@ -33,6 +33,7 @@ public:
 
 	board* gameBoard = nullptr;
 	int desiredMove[2][2] = { {-1,-1},{-1,-1} };
+	COLOR curPlayer = WHITE;
 
 	void onButtonClicked(wxCommandEvent& evt);
 	void paintEvent(wxPaintEvent& evt);
@@ -44,6 +45,9 @@ public:
 	void initMenu();
 	void initGame();
 	void boardSelect(wxCommandEvent& evt);
+	void handleSelection(int, int);
+	void movePiece(int[][2]);
+	void resetDesiredMove();
 
 	wxDECLARE_EVENT_TABLE();
 };
