@@ -33,6 +33,8 @@ public:
 	wxBoxSizer* gameSizer = nullptr;
 	wxGridSizer* chessBoard = nullptr;
 	wxButton** boardButtons;
+	wxStaticText* playerText;
+
 	wxImage backgroundImg;
 	wxBitmap resized;
 	int h = -1;

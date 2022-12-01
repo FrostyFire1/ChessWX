@@ -52,7 +52,7 @@ void cMain::initGame() {
     chessBoard = new wxGridSizer(8, 8, 0, 0);
     gameBoard = new board();
     boardButtons = new wxButton * [8 * 8]; //2D array, simulates chess board
-
+    playerText = new wxStaticText(this, wxID_ANY, wxT("Current player: White"), wxPoint(0,0), wxSize(400, 60));
     wxFont font = GetFont();
     font.SetPointSize(25);
 
@@ -71,8 +71,11 @@ void cMain::initGame() {
         }
     }
     renderBoard();
-    gameSizer->Add(0, 0, 2); //Add spacing
-    gameSizer->Add(chessBoard, 1, wxSHAPED, 0);
+    playerText->SetBackgroundColour(wxColour(255, 255, 255));
+    playerText->SetFont(font);
+    gameSizer->Add(playerText, 1, wxALIGN_RIGHT, 0);
+    gameSizer->Add(0, 0, 3); //Add spacing
+    gameSizer->Add(chessBoard, 2, wxSHAPED, 0);
 }
 
 void cMain::boardSelect(wxCommandEvent& evt) {
@@ -103,8 +106,15 @@ void cMain::handleSelection(int x, int y) {
 
         movePiece(startPos, finalPos);
         moveState = WAITING_FOR_SELECTION;
-        if (curPlayer == WHITE) curPlayer = BLACK; //Switch players
-        else curPlayer = WHITE;
+        //Switch players
+        if (curPlayer == WHITE) {
+            curPlayer = BLACK; 
+            playerText->SetLabelText("Current player: Black");
+        }
+        else {
+            curPlayer = WHITE;
+            playerText->SetLabelText("Current player: White");
+        }
     }
 }
 
