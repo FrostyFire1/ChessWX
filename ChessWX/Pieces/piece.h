@@ -2,6 +2,7 @@
 #include <string>
 #include "wx/wx.h"
 #include "../util.h"
+#include <array>
 enum COLOR {
 	WHITE,
 	BLACK,
@@ -13,7 +14,7 @@ public:
 	~piece();
 public:
 	virtual wxString getDisplayText(); //virtual methods can be overriden, great for "downcasting"
-	virtual std::vector<int[2]> generateMoves(piece**, int, int);
+	virtual std::vector<std::array<int, 2>> generateMoves(piece**, int, int);
 	int arrIndex(int, int, int);
 	wxString displayTextWhite, displayTextBlack;
 	COLOR color;

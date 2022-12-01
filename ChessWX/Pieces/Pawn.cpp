@@ -7,3 +7,6 @@ wxString pawn::getDisplayText(){
 	if (color == WHITE) return displayTextWhite;
 	else return displayTextBlack;
 }
+std::vector<std::array<int, 2>> pawn::generateMoves(piece** board, int x, int y) {
+
+}

@@ -26,5 +26,6 @@ public:
 	void initMaterial(COLOR color);
 	void move(Coords, Coords);
 	bool moveIsValid(Coords, Coords);
+	std::vector<std::array<int, 2>> validMoves(Coords, Coords);
 	int arrIndex(Coords);
 };

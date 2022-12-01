@@ -49,14 +49,15 @@ public:
 	void render(wxDC& dc);
 	void renderBoard();
 	void OnSize(wxSizeEvent& evt);
+
 	void initVariables();
 	void initMenu();
 	void initGame();
+
 	void boardSelect(wxCommandEvent& evt);
 	void handleSelection(int, int);
 	void movePiece(board::Coords, board::Coords);
-	void resetDesiredMove();
-
+	void highlightValidMoves(std::vector<std::array<int, 2>>);
 	wxDECLARE_EVENT_TABLE();
 };
 

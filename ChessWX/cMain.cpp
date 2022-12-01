@@ -61,9 +61,6 @@ void cMain::initGame() {
             boardButtons[arrIndex(x,y,8)]->Bind(wxEVT_COMMAND_BUTTON_CLICKED, &cMain::boardSelect, this); //bind cMain::boardSelect to button
             boardButtons[arrIndex(x,y,8)]->SetFont(font);
 
-            if ((y + x) % 2) boardButtons[arrIndex(x,y,8)]->SetBackgroundColour(wxColor(158, 83, 14)); //Alternate the bg color
-            else boardButtons[arrIndex(x,y,8)]->SetBackgroundColour(wxColor(191, 132, 78));
-
             chessBoard->Add(boardButtons[arrIndex(x,y,8)], 1, wxEXPAND | wxALL);
         }
     }
@@ -90,7 +87,8 @@ void cMain::handleSelection(int x, int y) {
         startPos.x = x;
         startPos.y = y;
         moveState = SELECTED;
-
+        std::vector<std::array<int, 2>> validMoves = gameBoard->boardState[arrIndex(x, y, 8)]->generateMoves(gameBoard->boardState,x,y);
+        highlightValidMoves(validMoves);
     }
 
     else if (moveState == SELECTED) { //One of the pieces is already selected
@@ -118,6 +116,13 @@ void cMain::handleSelection(int x, int y) {
 void cMain::movePiece(board::Coords startPos, board::Coords finalPos) {
     gameBoard->move(startPos, finalPos);
     renderBoard();
+}
+
+void cMain::highlightValidMoves(std::vector<std::array<int,2>> validMoves) {
+    for (std::array<int, 2> move : validMoves) {
+        wxButton* highlightButton = boardButtons[arrIndex(move[0], move[1], 8)];
+        highlightButton->SetBackgroundColour(wxColor(222, 25, 11));
+    }
 }
 
 void cMain::onButtonClicked(wxCommandEvent& evt){
@@ -172,6 +177,8 @@ void cMain::renderBoard() {
         for (int y = 0; y < gameBoard->height; y++) {
             wxString displayText = gameBoard->boardState[arrIndex(x, y, 8)]->getDisplayText();
             boardButtons[arrIndex(x, y, 8)]->SetLabel(displayText);
+            if ((y + x) % 2) boardButtons[arrIndex(x, y, 8)]->SetBackgroundColour(wxColor(158, 83, 14)); //Alternate the bg color
+            else boardButtons[arrIndex(x, y, 8)]->SetBackgroundColour(wxColor(191, 132, 78));
         }
     }
 

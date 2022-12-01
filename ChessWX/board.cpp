@@ -54,9 +54,20 @@ void board::initMaterial(COLOR color) {
 	boardState[arrIndex(Coords{row, 4})] = new king(color);
 }
 
+std::vector<std::array<int, 2>> board::validMoves(Coords startPos, Coords finalPos) {
+	std::vector<std::array<int, 2>> potentialMoves = boardState[arrIndex(startPos)]->generateMoves(boardState, startPos.x, startPos.y);
+	return potentialMoves; //TODO: Check for mate, discovery attacks etc.
+}
+
 bool board::moveIsValid(Coords startPos, Coords finalPos) {
-	std::vector<int[2]> potentialMoves = boardState[arrIndex(startPos)]->generateMoves(boardState);
-	return true;
+	std::vector<std::array<int, 2>> validMoves = this->validMoves(startPos, finalPos);
+	for (std::array<int, 2> move : validMoves) {
+		//check if move is in list of valid moves
+		if (finalPos.x == move[0] && finalPos.y == move[1]) {
+			return true;
+		}
+	}
+	return false;
 }
 void board::move(Coords start, Coords end) {
 	boardState[arrIndex(end)] = boardState[arrIndex(start)];
