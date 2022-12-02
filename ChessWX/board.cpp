@@ -73,7 +73,9 @@ bool board::moveIsValid(Coords startPos, Coords finalPos) {
 void board::move(Coords start, Coords end) {
 	piece* movedPiece = boardState[arrIndex(start)];
 	int distance = abs(start.x - end.x) + abs(start.y - end.y);
-
+	movedPiece->lastMoveDistance = distance;
+	movedPiece->hasMoved = true;
+	check = this->isCheck(movedPiece->color);
 
 	if (movedPiece->type == PAWN) handlePawn(movedPiece, start, end);
 	else if (movedPiece->type == KING && distance > 1) castle(movedPiece,end);
@@ -81,8 +83,6 @@ void board::move(Coords start, Coords end) {
 		boardState[arrIndex(end)] = boardState[arrIndex(start)];
 	}
 
-	movedPiece->lastMoveDistance = distance;
-	movedPiece->hasMoved = true;
 	boardState[arrIndex(start)] = new piece(COLOR(UNKNOWN));
 	lastMoved = boardState[arrIndex(end)];
 }
@@ -127,6 +127,7 @@ void board::castle(piece* king, Coords end) {
 		boardState[arrIndex(Coords{ end.x, 5})] = rook;
 		boardState[arrIndex(Coords{ end.x, 7 })] = new piece(COLOR(UNKNOWN));
 	}
+
 	else if (end.y == 2) {
 		piece* temp = boardState[arrIndex(Coords{ end.x, 6 })];
 		piece* rook = boardState[arrIndex(Coords{ end.x, 0 })];
@@ -134,4 +135,37 @@ void board::castle(piece* king, Coords end) {
 		boardState[arrIndex(Coords{ end.x, 3 })] = rook;
 		boardState[arrIndex(Coords{ end.x, 0 })] = new piece(COLOR(UNKNOWN));
 	}
+}
+
+bool board::isCheck(COLOR color) {
+	COLOR enemyColor;
+	if (color == WHITE) enemyColor = BLACK;
+	else enemyColor = WHITE;
+	Coords kingCoords = Coords{ -1,-1 };
+	for (int x = 0; x < width; x++) { //Look for the king on the board
+		for (int y = 0; y < height; y++) {
+			piece* potentialKing = boardState[arrIndex(Coords{ x,y })];
+			if (potentialKing->type == KING && potentialKing->color == enemyColor) {
+				kingCoords = Coords{ x,y };
+				break;
+			}
+		}
+	}
+
+	for (int x = 0; x < width; x++) { //Check every allied piece if they have the king in check
+		for (int y = 0; y < height; y++) {
+
+			piece* potentialAlly = boardState[arrIndex(Coords{ x,y })];
+			if (potentialAlly->color == color) {
+				std::vector<std::array<int, 2>> moveList = potentialAlly->generateMoves(boardState, lastMoved, x, y);
+				for (auto move : moveList) {
+					if (move[0] == kingCoords.x && move[1] == kingCoords.y) return true;
+				}
+			}
+			
+		}
+	}
+
+
+	return false;
 }

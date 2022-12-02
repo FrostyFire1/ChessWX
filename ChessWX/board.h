@@ -18,6 +18,7 @@ public:
 		int y;
 	};
 	int pos1 = -1, pos2 = -1, width, height;
+	bool check;
 	piece** boardState;
 	piece* lastMoved;
 	void initEmpty();
@@ -30,6 +31,7 @@ public:
 	void handlePawn(piece*, Coords, Coords);
 	void checkEnPassant(piece*, Coords);
 	void castle(piece*, Coords);
+	bool isCheck(COLOR);
 	std::vector<std::array<int, 2>> validMoves(Coords, Coords);
 	int arrIndex(Coords);
 };
