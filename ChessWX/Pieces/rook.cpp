@@ -3,7 +3,16 @@ rook::rook(COLOR color) : piece(color){
 	type = ROOK;
 	displayTextWhite = wxT("♖");
 	displayTextBlack = wxT("♜");
+	pieceImageWhite.LoadFile("img/rook.png", wxBITMAP_TYPE_PNG);
+	pieceImageBlack.LoadFile("img/rook.png", wxBITMAP_TYPE_PNG);
+
 }
+
+wxBitmap rook::getPieceImage() {
+	if (this->color == WHITE) return pieceImageWhite;
+	else return pieceImageBlack;
+}
+
 wxString rook::getDisplayText() { 
 	if (color == WHITE) return displayTextWhite;
 	else return displayTextBlack;

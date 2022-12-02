@@ -32,6 +32,7 @@ public:
 	void checkEnPassant(piece*, Coords);
 	void castle(piece*, Coords);
 	bool isCheck(COLOR);
+	bool isMate(COLOR);
 	std::vector<std::array<int, 2>> validMoves(Coords);
 	int arrIndex(Coords);
 };

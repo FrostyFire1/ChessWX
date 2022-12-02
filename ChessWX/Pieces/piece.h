@@ -24,8 +24,10 @@ public:
 public:
 	virtual wxString getDisplayText(); //virtual methods can be overriden, great for "downcasting"
 	virtual std::vector<std::array<int, 2>> generateMoves(piece**, piece*, int, int);
+	virtual wxBitmap getPieceImage();
 	int arrIndex(int, int, int);
 	wxString displayTextWhite, displayTextBlack;
+	wxBitmap pieceImageWhite, pieceImageBlack;
 	int lastMoveDistance;
 	bool hasMoved;
 	TYPE type;

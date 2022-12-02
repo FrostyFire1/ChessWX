@@ -21,3 +21,6 @@ std::vector<std::array<int, 2>> piece::generateMoves(piece** _,piece* __, int __
 int piece::arrIndex(int x, int y, int height) {
 	return y * height + x;
 }
+wxBitmap piece::getPieceImage() {
+	return pieceImageWhite;
+}

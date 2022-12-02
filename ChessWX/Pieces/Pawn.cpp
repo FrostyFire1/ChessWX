@@ -4,6 +4,13 @@ pawn::pawn(COLOR color) : piece(color){
 	hasMoved = false;
 	displayTextWhite = wxT("♙");
 	displayTextBlack = wxT("♟︎");
+	pieceImageWhite.LoadFile("img/pawn.png", wxBITMAP_TYPE_PNG);
+	pieceImageBlack.LoadFile("img/pawn.png", wxBITMAP_TYPE_PNG);
+}
+
+wxBitmap pawn::getPieceImage() {
+	if (this->color == WHITE) return pieceImageWhite;
+	else return pieceImageBlack;
 }
 wxString pawn::getDisplayText(){
 	if (color == WHITE) return displayTextWhite;

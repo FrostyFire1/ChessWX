@@ -3,7 +3,16 @@ knight::knight(COLOR color) : piece(color){
 	type = KNIGHT;
 	displayTextWhite = wxT("♘");
 	displayTextBlack = wxT("♞");
+	pieceImageWhite.LoadFile("img/knight.png", wxBITMAP_TYPE_PNG);
+	pieceImageBlack.LoadFile("img/knight.png", wxBITMAP_TYPE_PNG);
+
 }
+
+wxBitmap knight::getPieceImage() {
+	if (this->color == WHITE) return pieceImageWhite;
+	else return pieceImageBlack;
+}
+
 wxString knight::getDisplayText() {
 	if (color == WHITE) return displayTextWhite;
 	else return displayTextBlack;

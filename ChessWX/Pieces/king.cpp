@@ -3,6 +3,13 @@ king::king(COLOR color) : piece(color){
 	type = KING;
 	displayTextWhite = wxT("♔");
 	displayTextBlack = wxT("♚");
+	pieceImageWhite.LoadFile("img/king.png", wxBITMAP_TYPE_PNG);
+	pieceImageBlack.LoadFile("img/king.png", wxBITMAP_TYPE_PNG);
+
+}
+wxBitmap king::getPieceImage() {
+	if (this->color == WHITE) return pieceImageWhite;
+	else return pieceImageBlack;
 }
 wxString king::getDisplayText() { 
 	if (color == WHITE) return displayTextWhite;

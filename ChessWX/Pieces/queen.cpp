@@ -3,6 +3,14 @@ queen::queen(COLOR color) : piece(color){
 	type = QUEEN;
 	displayTextWhite = wxT("♕");
 	displayTextBlack = wxT("♛");
+	pieceImageWhite.LoadFile("img/queen.png", wxBITMAP_TYPE_PNG);
+	pieceImageBlack.LoadFile("img/queen.png", wxBITMAP_TYPE_PNG);
+
+}
+
+wxBitmap queen::getPieceImage() {
+	if (this->color == WHITE) return pieceImageWhite;
+	else return pieceImageBlack;
 }
 wxString queen::getDisplayText() { 
 	if (color == WHITE) return displayTextWhite;

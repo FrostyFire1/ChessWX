@@ -41,6 +41,7 @@ public:
 	int w = -1;
 
 	board* gameBoard = nullptr;
+	wxBitmap buttonBGRemoved;
 	COLOR curPlayer = WHITE;
 
 	void onButtonClicked(wxCommandEvent& evt);

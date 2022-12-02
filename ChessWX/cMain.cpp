@@ -29,6 +29,7 @@ void cMain::initVariables() {
     windowSizer->Hide(gameSizer);
     this->SetSizer(windowSizer);
     backgroundImg.LoadFile("img/background.png", wxBITMAP_TYPE_PNG);
+    buttonBGRemoved.LoadFile("img/bg.png", wxBITMAP_TYPE_PNG);
 }
 
 void cMain::initMenu() {
@@ -49,7 +50,7 @@ void cMain::initGame() {
     chessBoard = new wxGridSizer(8, 8, 0, 0);
     gameBoard = new board();
     boardButtons = new wxButton * [8 * 8]; //2D array, simulates chess board
-    playerText = new wxStaticText(this, wxID_ANY, wxT("Current player: White"), wxPoint(0,0), wxSize(450, 60));
+    playerText = new wxStaticText(this, wxID_ANY, wxT("Current player: White"), wxPoint(0,0), wxSize(400, 60));
     wxFont font = GetFont();
     font.SetPointSize(25);
 
@@ -66,6 +67,7 @@ void cMain::initGame() {
     }
     renderBoard();
     playerText->SetBackgroundColour(wxColour(255, 255, 255));
+    font.SetPointSize(18);
     playerText->SetFont(font);
     gameSizer->Add(playerText, 1, wxALIGN_RIGHT, 0);
     gameSizer->Add(0, 0, 3); //Add spacing
@@ -115,6 +117,8 @@ void cMain::handleSelection(int x, int y) {
         //Switch players
         std::string text = "";
         bool isCheck = gameBoard->isCheck(curPlayer);
+        bool isMate = gameBoard->isMate(curPlayer);
+        COLOR potentialWinner = curPlayer;
         if (curPlayer == WHITE) {
             curPlayer = BLACK; 
             text = "Current player: Black ";
@@ -123,7 +127,12 @@ void cMain::handleSelection(int x, int y) {
             curPlayer = WHITE;
             text = "Current player: White ";
         }
-        if (isCheck) text += "CHECK!";
+        if (isCheck) text += "CHECK";
+        if (isMate) {
+            text = "CHECKMATE!";
+            if (potentialWinner == WHITE) text += " White wins!";
+            else text += " Black wins!";
+        }
         playerText->SetLabelText(text);
     }
 }
@@ -190,8 +199,14 @@ void cMain::render(wxDC& dc)
 void cMain::renderBoard() {
     for (int x = 0; x < gameBoard->width; x++) {
         for (int y = 0; y < gameBoard->height; y++) {
-            wxString displayText = gameBoard->boardState[arrIndex(x, y, 8)]->getDisplayText();
-            boardButtons[arrIndex(x, y, 8)]->SetLabel(displayText);
+            piece* curPiece = gameBoard->boardState[arrIndex(x, y, 8)];
+            if (curPiece->type != PLACEHOLDER) {
+                boardButtons[arrIndex(x, y, 8)]->SetBitmap(curPiece->getPieceImage());
+            }
+            else boardButtons[arrIndex(x, y, 8)]->SetBitmap(buttonBGRemoved);
+
+            //wxString displayText = gameBoard->boardState[arrIndex(x, y, 8)]->getDisplayText();
+            //boardButtons[arrIndex(x, y, 8)]->SetLabel(displayText);
             if ((y + x) % 2) boardButtons[arrIndex(x, y, 8)]->SetBackgroundColour(wxColor(158, 83, 14)); //Alternate the bg color
             else boardButtons[arrIndex(x, y, 8)]->SetBackgroundColour(wxColor(191, 132, 78));
         }

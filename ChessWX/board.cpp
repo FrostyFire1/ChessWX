@@ -64,27 +64,23 @@ std::vector<std::array<int, 2>> board::validMoves(Coords startPos) {
 	std::vector<std::array<int, 2>> filteredMoves;
 
 	for (auto move : potentialMoves) {
-		//Player is in check, try every move to get rid of it
-		if (check) {
-			//Simulate the move
-			piece* temp = boardState[arrIndex(startPos)];
-			piece* tempFinal = boardState[arrIndex(Coords{move[0],move[1]})];
-			boardState[arrIndex(startPos)] = new piece(COLOR(UNKNOWN));
-			boardState[arrIndex(Coords{ move[0],move[1] })] = temp;
+		//Simulate the move
+		piece* temp = boardState[arrIndex(startPos)];
+		piece* tempFinal = boardState[arrIndex(Coords{move[0],move[1]})];
+		boardState[arrIndex(startPos)] = new piece(COLOR(UNKNOWN));
+		boardState[arrIndex(Coords{ move[0],move[1] })] = temp;
 
-			//After simulating the move check if the enemy still has you in check
-			if (isCheck(enemyColor)) { 
-				boardState[arrIndex(startPos)] = temp;
-				boardState[arrIndex(Coords{move[0],move[1]})] = tempFinal; //return board to original state
-				continue;
-			}
-			else {
-				boardState[arrIndex(startPos)] = temp;
-				boardState[arrIndex(Coords{move[0],move[1]})] = tempFinal; //return board to original state
-				filteredMoves.push_back(move);
-			}
+		//After simulating the move check if the enemy has you in check
+		if (isCheck(enemyColor)) { 
+			boardState[arrIndex(startPos)] = temp;
+			boardState[arrIndex(Coords{move[0],move[1]})] = tempFinal; //return board to original state
+			continue;
 		}
-		else filteredMoves.push_back(move);
+		else {
+			boardState[arrIndex(startPos)] = temp;
+			boardState[arrIndex(Coords{move[0],move[1]})] = tempFinal; //return board to original state
+			filteredMoves.push_back(move);
+		}
 	}
 	return filteredMoves; //TODO: Check for mate, discovery attacks etc.
 }
@@ -199,4 +195,34 @@ bool board::isCheck(COLOR color) {
 
 
 	return false;
+}
+
+bool board::isMate(COLOR color) {
+	COLOR enemyColor;
+	if (color == WHITE) enemyColor = BLACK;
+	else enemyColor = WHITE;
+
+	Coords kingCoords = Coords{ -1,-1 };
+	for (int x = 0; x < width; x++) { //Look for the king on the board
+		for (int y = 0; y < height; y++) {
+			piece* potentialKing = boardState[arrIndex(Coords{ x,y })];
+			if (potentialKing->type == KING && potentialKing->color == enemyColor) {
+				kingCoords = Coords{ x,y };
+				break;
+			}
+		}
+	}
+
+	for (int x = 0; x < width; x++) { //Check every allied piece if they have the king in check
+		for (int y = 0; y < height; y++) {
+
+			piece* potentialEnemy = boardState[arrIndex(Coords{ x,y })];
+			if (potentialEnemy->color == enemyColor) {
+				std::vector<std::array<int, 2>> moveList = this->validMoves(Coords{ x,y }); //Check if there's any valid block
+				if (!moveList.empty()) return false;
+			}
+
+		}
+	}
+	return true;
 }

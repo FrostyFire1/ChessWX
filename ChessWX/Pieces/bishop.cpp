@@ -3,6 +3,13 @@ bishop::bishop(COLOR color) : piece(color) {
 	type = BISHOP;
 	displayTextWhite = wxT("♗");
 	displayTextBlack = wxT("♝");
+	pieceImageWhite.LoadFile("img/bishop.png", wxBITMAP_TYPE_PNG);
+	pieceImageBlack.LoadFile("img/bishop.png", wxBITMAP_TYPE_PNG);
+
+}
+wxBitmap bishop::getPieceImage() {
+	if (this->color == WHITE) return pieceImageWhite;
+	else return pieceImageBlack;
 }
 wxString bishop::getDisplayText() {
 	if (color == WHITE) return displayTextWhite;
