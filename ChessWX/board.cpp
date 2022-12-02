@@ -76,7 +76,6 @@ void board::move(Coords start, Coords end) {
 		if (boardState[arrIndex(end)]->type == PLACEHOLDER) checkEnPassant(movedPiece, end);
 		int distance = abs((start.x - end.x) + (start.y - end.y));
 		movedPiece->lastMoveDistance = distance;
-		movedPiece->hasMoved = true;
 	}
 	//Check for promotion
 	if (movedPiece->type == PAWN && (movedPiece->color == WHITE && end.x == 0) || (movedPiece->color == BLACK && end.x == 7)){ 
@@ -85,6 +84,7 @@ void board::move(Coords start, Coords end) {
 	else {
 		boardState[arrIndex(end)] = boardState[arrIndex(start)];
 	}
+	movedPiece->hasMoved = true;
 	boardState[arrIndex(start)] = new piece(COLOR(UNKNOWN));
 	lastMoved = boardState[arrIndex(end)];
 }
