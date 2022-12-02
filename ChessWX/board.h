@@ -24,9 +24,12 @@ public:
 	void initBoard();
 	void initPawns();
 	void initMaterial(COLOR color);
-	void move(Coords, Coords);
-	void checkEnPassant(piece*, Coords);
 	bool moveIsValid(Coords, Coords);
+	void move(Coords, Coords);
+
+	void handlePawn(piece*, Coords, Coords);
+	void checkEnPassant(piece*, Coords);
+	void castle(piece*, Coords);
 	std::vector<std::array<int, 2>> validMoves(Coords, Coords);
 	int arrIndex(Coords);
 };
