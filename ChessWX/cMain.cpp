@@ -57,7 +57,7 @@ void cMain::initGame() {
 
         for (int y = 0; y < 8; y++) {
              
-            boardButtons[arrIndex(x,y,8)] = new wxButton(this, 20000 + (arrIndex(x,y,8)), "", wxDefaultPosition, wxSize(50, 50), wxNO_BORDER);
+            boardButtons[arrIndex(x,y,8)] = new wxButton(this, 20000 + (arrIndex(x,y,8)), "", wxDefaultPosition, wxSize(50, 50));
             boardButtons[arrIndex(x,y,8)]->Bind(wxEVT_COMMAND_BUTTON_CLICKED, &cMain::boardSelect, this); //bind cMain::boardSelect to button
             boardButtons[arrIndex(x,y,8)]->SetFont(font);
 

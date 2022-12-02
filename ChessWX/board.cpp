@@ -3,7 +3,7 @@ int board::arrIndex(Coords coords) {
 	return coords.y * height + coords.x;
 }
 
-board::board(){
+board::board() {
 	this->width = 8;
 	this->height = 8;
 	boardState = new piece * [width * height];
@@ -41,21 +41,21 @@ void board::initMaterial(COLOR color) {
 	if (color == WHITE) row = 7;
 	else row = 0;
 
-	boardState[arrIndex(Coords{row, 0})] = new rook(color);
-	boardState[arrIndex(Coords{row, 7})] = new rook(color);
+	boardState[arrIndex(Coords{ row, 0 })] = new rook(color);
+	boardState[arrIndex(Coords{ row, 7 })] = new rook(color);
 
-	boardState[arrIndex(Coords{row, 1})] = new knight(color);
-	boardState[arrIndex(Coords{row, 6})] = new knight(color);
+	boardState[arrIndex(Coords{ row, 1 })] = new knight(color);
+	boardState[arrIndex(Coords{ row, 6 })] = new knight(color);
 
-	boardState[arrIndex(Coords{row, 2})] = new bishop(color);
-	boardState[arrIndex(Coords{row, 5})] = new bishop(color);
+	boardState[arrIndex(Coords{ row, 2 })] = new bishop(color);
+	boardState[arrIndex(Coords{ row, 5 })] = new bishop(color);
 
-	boardState[arrIndex(Coords{row, 3})] = new queen(color);
-	boardState[arrIndex(Coords{row, 4})] = new king(color);
+	boardState[arrIndex(Coords{ row, 3 })] = new queen(color);
+	boardState[arrIndex(Coords{ row, 4 })] = new king(color);
 }
 
 std::vector<std::array<int, 2>> board::validMoves(Coords startPos, Coords finalPos) {
-	std::vector<std::array<int, 2>> potentialMoves = boardState[arrIndex(startPos)]->generateMoves(boardState,lastMoved, startPos.x, startPos.y);
+	std::vector<std::array<int, 2>> potentialMoves = boardState[arrIndex(startPos)]->generateMoves(boardState, lastMoved, startPos.x, startPos.y);
 	return potentialMoves; //TODO: Check for mate, discovery attacks etc.
 }
 
@@ -73,13 +73,18 @@ void board::move(Coords start, Coords end) {
 	piece* movedPiece = boardState[arrIndex(start)];
 	if (movedPiece->type == PAWN) {
 		//Check for en passant
-		if(boardState[arrIndex(end)]->type == PLACEHOLDER) checkEnPassant(movedPiece, end);
-
+		if (boardState[arrIndex(end)]->type == PLACEHOLDER) checkEnPassant(movedPiece, end);
 		int distance = abs((start.x - end.x) + (start.y - end.y));
 		movedPiece->lastMoveDistance = distance;
 		movedPiece->hasMoved = true;
 	}
-	boardState[arrIndex(end)] = boardState[arrIndex(start)];
+	//Check for promotion
+	if (movedPiece->type == PAWN && (movedPiece->color == WHITE && end.x == 0) || (movedPiece->color == BLACK && end.x == 7)){ 
+		boardState[arrIndex(end)] = new queen(COLOR(movedPiece->color));
+	}
+	else {
+		boardState[arrIndex(end)] = boardState[arrIndex(start)];
+	}
 	boardState[arrIndex(start)] = new piece(COLOR(UNKNOWN));
 	lastMoved = boardState[arrIndex(end)];
 }
