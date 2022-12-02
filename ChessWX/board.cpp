@@ -4,6 +4,7 @@ int board::arrIndex(Coords coords) {
 }
 
 board::board() {
+	check = false;
 	this->width = 8;
 	this->height = 8;
 	boardState = new piece * [width * height];
@@ -54,15 +55,44 @@ void board::initMaterial(COLOR color) {
 	boardState[arrIndex(Coords{ row, 4 })] = new king(color);
 }
 
-std::vector<std::array<int, 2>> board::validMoves(Coords startPos, Coords finalPos) {
-	std::vector<std::array<int, 2>> potentialMoves = boardState[arrIndex(startPos)]->generateMoves(boardState, lastMoved, startPos.x, startPos.y);
-	return potentialMoves; //TODO: Check for mate, discovery attacks etc.
+std::vector<std::array<int, 2>> board::validMoves(Coords startPos) {
+	piece* toMove = boardState[arrIndex(startPos)];
+	COLOR enemyColor;
+	if (toMove->color == WHITE) enemyColor = BLACK;
+	else enemyColor = WHITE;
+	std::vector<std::array<int, 2>> potentialMoves = toMove->generateMoves(boardState, lastMoved, startPos.x, startPos.y);
+	std::vector<std::array<int, 2>> filteredMoves;
+
+	for (auto move : potentialMoves) {
+		//Player is in check, try every move to get rid of it
+		if (check) {
+			//Simulate the move
+			piece* temp = boardState[arrIndex(startPos)];
+			piece* tempFinal = boardState[arrIndex(Coords{move[0],move[1]})];
+			boardState[arrIndex(startPos)] = new piece(COLOR(UNKNOWN));
+			boardState[arrIndex(Coords{ move[0],move[1] })] = temp;
+
+			//After simulating the move check if the enemy still has you in check
+			if (isCheck(enemyColor)) { 
+				boardState[arrIndex(startPos)] = temp;
+				boardState[arrIndex(Coords{move[0],move[1]})] = tempFinal; //return board to original state
+				continue;
+			}
+			else {
+				boardState[arrIndex(startPos)] = temp;
+				boardState[arrIndex(Coords{move[0],move[1]})] = tempFinal; //return board to original state
+				filteredMoves.push_back(move);
+			}
+		}
+		else filteredMoves.push_back(move);
+	}
+	return filteredMoves; //TODO: Check for mate, discovery attacks etc.
 }
 
 bool board::moveIsValid(Coords startPos, Coords finalPos) {
-	std::vector<std::array<int, 2>> validMoves = this->validMoves(startPos, finalPos);
+	std::vector<std::array<int, 2>> validMoves = this->validMoves(startPos);
 	for (std::array<int, 2> move : validMoves) {
-		//check if move is in list of valid moves
+
 		if (finalPos.x == move[0] && finalPos.y == move[1]) {
 			return true;
 		}
@@ -75,7 +105,6 @@ void board::move(Coords start, Coords end) {
 	int distance = abs(start.x - end.x) + abs(start.y - end.y);
 	movedPiece->lastMoveDistance = distance;
 	movedPiece->hasMoved = true;
-	check = this->isCheck(movedPiece->color);
 
 	if (movedPiece->type == PAWN) handlePawn(movedPiece, start, end);
 	else if (movedPiece->type == KING && distance > 1) castle(movedPiece,end);
@@ -85,6 +114,8 @@ void board::move(Coords start, Coords end) {
 
 	boardState[arrIndex(start)] = new piece(COLOR(UNKNOWN));
 	lastMoved = boardState[arrIndex(end)];
+	check = this->isCheck(movedPiece->color);
+
 }
 
 void board::handlePawn(piece* pawn, Coords start, Coords end) {
