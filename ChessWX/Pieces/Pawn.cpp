@@ -18,10 +18,9 @@ std::vector<std::array<int, 2>> pawn::generateMoves(piece** board, piece* lastMo
 
 	if (!isOutOfBounds(x + direction, y) && board[arrIndex(x + direction, y, 8)]->type == PLACEHOLDER) {
 		pawnMoves.push_back({ x + direction, y + 0 }); //Can move 1 rank forward
-	}
-
-	if (!isOutOfBounds(x + 2*direction, y) && board[arrIndex(x + 2*direction, y, 8)]->type == PLACEHOLDER) {
-		if (!hasMoved) pawnMoves.push_back({ x + 2 * direction,y + 0 }); //First move can also be 2 ranks forward 
+		if (!isOutOfBounds(x + 2 * direction, y) && board[arrIndex(x + 2 * direction, y, 8)]->type == PLACEHOLDER) {
+			if (!hasMoved) pawnMoves.push_back({ x + 2 * direction,y + 0 }); //First move can also be 2 ranks forward 
+		}
 	}
 	
 	if (!isOutOfBounds(x + direction, y + 1) && board[arrIndex(x + direction, y + 1, 8)]->type != PLACEHOLDER) {
