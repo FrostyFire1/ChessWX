@@ -21,8 +21,7 @@ std::vector<std::array<int, 2>> rook::generateMoves(piece** board, piece* _, int
 			if (atDestination->color == this->color) break;
 
 			potentialMoves.push_back({ newX,newY });
-			if (atDestination->color != UNKNOWN) break;
-
+			if (atDestination->type != PLACEHOLDER && atDestination->color != this->color) break;
 			newX += step[0];
 			newY += step[1];
 		}
