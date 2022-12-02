@@ -7,5 +7,6 @@ public:
 	~bishop();
 public:
 	wxString getDisplayText() override;
+
 };
 
