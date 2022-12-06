@@ -7,6 +7,7 @@ wxBEGIN_EVENT_TABLE(cMain, wxFrame)
     EVT_BUTTON(10002, loadGame)
     EVT_BUTTON(10003, newGameAtomic)
     EVT_BUTTON(10004, saveGame)
+    EVT_BUTTON(10005, resetGame)
     EVT_PAINT(paintEvent)
     EVT_SIZE(OnSize)
 wxEND_EVENT_TABLE()
@@ -63,8 +64,11 @@ void cMain::initGame() {
     gameBoard = new board();
     boardButtons = new wxButton * [8 * 8]; //2D array, simulates chess board
     playerText = new wxStaticText(this, wxID_ANY, wxT("Current player: White"), wxPoint(0,0), wxSize(400, 60));
+
     saveGameButton = new wxButton(this, 10004, wxT("Zapisz gre"), wxDefaultPosition, wxSize(150,60));
     saveGameButton->SetBackgroundColour(wxColor(150, 100, 200));
+    resetGameButton = new wxButton(this, 10005, wxT("Zrestartuj gre"), wxDefaultPosition, wxSize(150, 60));
+    resetGameButton->SetBackgroundColour(wxColor(100, 200, 150));
     wxFont font = GetFont();
     font.SetPointSize(25);
 
@@ -87,6 +91,7 @@ void cMain::initGame() {
     gameSizer->Add(0, 0, 1);
     initLegend();
     gameSizer->Add(saveGameButton, 1, wxALIGN_RIGHT, 0);
+    gameSizer->Add(resetGameButton, 1, wxALIGN_RIGHT, 0);
     gameSizer->Add(0, 0, 3); //Add spacing
     gameSizer->Add(chessBoard, 2, wxSHAPED, 0);
 }
@@ -263,6 +268,15 @@ void cMain::newGameAtomic(wxCommandEvent& evt) {
     windowSizer->Show(gameSizer);
     windowSizer->Layout();
     evt.Skip();
+}
+
+void cMain::resetGame(wxCommandEvent& evt) {
+    bool isAtomic = gameBoard->isAtomic;
+    gameBoard = new board();
+    gameBoard->isAtomic = isAtomic;
+    curPlayer = WHITE;
+    setPlayerText();
+    renderBoard();
 }
 // void cMain::paintBackground(wxEraseEvent& Event) {
 //	wxDC* DC = Event.GetDC();

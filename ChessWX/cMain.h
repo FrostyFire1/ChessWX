@@ -35,6 +35,7 @@ public:
 	wxGridSizer* chessBoard = nullptr;
 	wxButton** boardButtons;
 	wxButton* saveGameButton = nullptr;
+	wxButton* resetGameButton = nullptr;
 	wxStaticText* playerText;
 
 
@@ -52,6 +53,7 @@ public:
 	void newGameAtomic(wxCommandEvent& evt);
 	void saveGame(wxCommandEvent& evt);
 	void loadGame(wxCommandEvent& evt);
+	void resetGame(wxCommandEvent& evt);
 	void paintEvent(wxPaintEvent& evt);
 	void paintNow();
 	void render(wxDC& dc);
