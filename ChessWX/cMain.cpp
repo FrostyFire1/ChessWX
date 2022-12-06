@@ -6,7 +6,6 @@ wxBEGIN_EVENT_TABLE(cMain, wxFrame)
     EVT_SIZE(OnSize)
 wxEND_EVENT_TABLE()
 
-
 cMain::cMain() : wxFrame(nullptr, wxID_ANY, "SzAGHy", wxPoint(30,30), wxSize(1280,720)){
 	wxInitAllImageHandlers();
     initVariables();
@@ -222,4 +221,3 @@ void cMain::OnSize(wxSizeEvent& event) {
     //skip the event.
     event.Skip();
 }
-
