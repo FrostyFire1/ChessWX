@@ -1,4 +1,7 @@
 #include "board.h"
+#include "util.h"
+#include <iostream>
+#include <fstream>
 int board::arrIndex(Coords coords) {
 	return coords.y * height + coords.x;
 }
@@ -57,10 +60,8 @@ std::string pieceColor(piece* piece) {
 
 std::string board::getState() {
 	std::string state = "";
-	for (int x = 0; x < width; x++) {
-		for (int y = 0; y < height; y++) {
-			piece* curPiece = boardState[arrIndex(Coords{ x,y })];
-			state += "{";
+	for (int index = 0; index < width*height; index++){
+			piece* curPiece = boardState[index];
 			state += pieceType(curPiece);
 			state += ",";
 			state += pieceColor(curPiece);
@@ -68,15 +69,50 @@ std::string board::getState() {
 			state += std::to_string(curPiece->hasMoved);
 			state += ",";
 			state += std::to_string(curPiece->lastMoveDistance);
-			state += "}";
-			if (y < height - 1) state += ",";
-		}
-		state += "\n";
+			state += "\n";
 	}
 	return state;
 }
+COLOR getColor(std::string color) {
+	if (color == "white") return WHITE;
+	else if (color == "black") return BLACK;
+	else return UNKNOWN;
+}
 
 
+piece* newPieceFromData(std::string type, COLOR color) {
+	if (type == "pawn") return new pawn(color);
+	else if (type == "rook") return new rook(color);
+	else if (type == "knight") return new knight(color);
+	else if (type == "bishop") return new bishop(color);
+	else if (type == "queen") return new queen(color);
+	else if (type == "king") return new king(color);
+	else return new piece(color);
+}
+
+piece* makePiece(std::string rowData) {
+	std::vector<std::string> pieceAttributes = split(rowData, ',');
+	COLOR pieceColor = getColor(pieceAttributes[1]);
+	piece* loadedPiece = newPieceFromData(pieceAttributes[0], pieceColor);
+	loadedPiece->hasMoved = std::stoi(pieceAttributes[2]);
+	loadedPiece->lastMoveDistance =std::stoi(pieceAttributes[3]);
+	return loadedPiece;
+}
+COLOR board::loadSave(std::string saveName) {
+	std::ifstream save;
+	std::string rowData;
+	save.open(saveName);
+	int index = 0;
+	while (!save.eof() && index < 64) {
+		save >> rowData;
+		boardState[index] = makePiece(rowData);
+		index++;
+	}
+	std::string color;
+	save >> color;
+	if (color == "white") return WHITE;
+	else return BLACK;
+}
 void board::initBoard() {
 	initPawns();
 	initMaterial(COLOR(WHITE));

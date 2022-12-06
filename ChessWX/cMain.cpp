@@ -147,32 +147,42 @@ void cMain::handleSelection(int x, int y) {
         movePiece(startPos, finalPos);
         moveState = WAITING_FOR_SELECTION;
         //Switch players
-        std::string text = "";
-        bool isCheck = gameBoard->isCheck(curPlayer);
-        bool isMate = gameBoard->isMate(curPlayer);
-        bool isDraw = gameBoard->isDraw(curPlayer);
-        COLOR potentialWinner = curPlayer;
         if (curPlayer == WHITE) {
-            curPlayer = BLACK; 
-            text = "Current player: Black ";
+            curPlayer = BLACK;
         }
         else {
             curPlayer = WHITE;
-            text = "Current player: White ";
         }
-        if (isCheck) text += "CHECK";
-        if (isMate) {
-            text = "CHECKMATE!";
-            if (potentialWinner == WHITE) text += " White wins!";
-            else text += " Black wins!";
-        }
-        else if (isDraw) {
-            text = "STALEMATE!";
-        }
-        playerText->SetLabelText(text);
+        setPlayerText();
+
     }
 }
 
+void cMain::setPlayerText() {
+    std::string text = "";
+    COLOR potentialLoser;
+    if (curPlayer == WHITE) potentialLoser = BLACK;
+    else potentialLoser = WHITE;
+    bool isCheck = gameBoard->isCheck(potentialLoser);
+    bool isMate = gameBoard->isMate(potentialLoser);
+    bool isDraw = gameBoard->isDraw(potentialLoser);
+    if (curPlayer == WHITE) {
+        text = "Current player: White ";
+    }
+    else {
+        text = "Current player: Black ";
+    }
+    if (isCheck) text += "CHECK";
+    if (isMate) {
+        text = "CHECKMATE!";
+        if (potentialLoser == WHITE) text += " White wins!";
+        else text += " Black wins!";
+    }
+    else if (isDraw) {
+        text = "STALEMATE!";
+    }
+    playerText->SetLabelText(text);
+}
 void cMain::movePiece(board::Coords startPos, board::Coords finalPos) {
     gameBoard->move(startPos, finalPos);
     renderBoard();
@@ -205,13 +215,21 @@ void cMain::saveGame(wxCommandEvent& evt) {
     std::ofstream save;
     save.open("gameSave.txt");
     save << gameState;
+    if (curPlayer == WHITE) save << "white";
+    else save << "black";
     save.close();
 
     evt.Skip();
 }
 
 void cMain::loadGame(wxCommandEvent& evt) {
-
+    curPlayer = gameBoard->loadSave("gameSave.txt");
+    setPlayerText();
+    windowSizer->Hide(menuSizer);
+    windowSizer->Show(gameSizer);
+    windowSizer->Layout();
+    renderBoard();
+    evt.Skip();
 }
 // void cMain::paintBackground(wxEraseEvent& Event) {
 //	wxDC* DC = Event.GetDC();

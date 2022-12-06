@@ -47,6 +47,7 @@ public:
 	wxBitmap buttonBGRemoved;
 	COLOR curPlayer = WHITE;
 
+	void setPlayerText();
 	void onButtonClicked(wxCommandEvent& evt);
 	void saveGame(wxCommandEvent& evt);
 	void loadGame(wxCommandEvent& evt);

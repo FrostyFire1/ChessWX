@@ -23,6 +23,7 @@ public:
 	piece** boardState;
 	piece* lastMoved;
 	std::string getState();
+	COLOR loadSave(std::string);
 	void initEmpty();
 	void initBoard();
 	void initPawns();
