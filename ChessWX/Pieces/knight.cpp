@@ -4,7 +4,7 @@ knight::knight(COLOR color) : piece(color){
 	displayTextWhite = wxT("♘");
 	displayTextBlack = wxT("♞");
 	pieceImageWhite.LoadFile("img/knight.png", wxBITMAP_TYPE_PNG);
-	pieceImageBlack.LoadFile("img/knight.png", wxBITMAP_TYPE_PNG);
+	pieceImageBlack.LoadFile("img/knightBlack.png", wxBITMAP_TYPE_PNG);
 
 }
 

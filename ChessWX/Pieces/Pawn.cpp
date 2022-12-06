@@ -5,7 +5,7 @@ pawn::pawn(COLOR color) : piece(color){
 	displayTextWhite = wxT("♙");
 	displayTextBlack = wxT("♟︎");
 	pieceImageWhite.LoadFile("img/pawn.png", wxBITMAP_TYPE_PNG);
-	pieceImageBlack.LoadFile("img/pawn.png", wxBITMAP_TYPE_PNG);
+	pieceImageBlack.LoadFile("img/pawnBlack.png", wxBITMAP_TYPE_PNG);
 }
 
 wxBitmap pawn::getPieceImage() {

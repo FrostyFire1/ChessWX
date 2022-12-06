@@ -4,7 +4,7 @@ bishop::bishop(COLOR color) : piece(color) {
 	displayTextWhite = wxT("♗");
 	displayTextBlack = wxT("♝");
 	pieceImageWhite.LoadFile("img/bishop.png", wxBITMAP_TYPE_PNG);
-	pieceImageBlack.LoadFile("img/bishop.png", wxBITMAP_TYPE_PNG);
+	pieceImageBlack.LoadFile("img/bishopBlack.png", wxBITMAP_TYPE_PNG);
 
 }
 wxBitmap bishop::getPieceImage() {

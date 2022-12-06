@@ -4,7 +4,7 @@ queen::queen(COLOR color) : piece(color){
 	displayTextWhite = wxT("♕");
 	displayTextBlack = wxT("♛");
 	pieceImageWhite.LoadFile("img/queen.png", wxBITMAP_TYPE_PNG);
-	pieceImageBlack.LoadFile("img/queen.png", wxBITMAP_TYPE_PNG);
+	pieceImageBlack.LoadFile("img/queenBlack.png", wxBITMAP_TYPE_PNG);
 
 }
 

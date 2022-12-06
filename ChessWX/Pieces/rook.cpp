@@ -4,7 +4,7 @@ rook::rook(COLOR color) : piece(color){
 	displayTextWhite = wxT("♖");
 	displayTextBlack = wxT("♜");
 	pieceImageWhite.LoadFile("img/rook.png", wxBITMAP_TYPE_PNG);
-	pieceImageBlack.LoadFile("img/rook.png", wxBITMAP_TYPE_PNG);
+	pieceImageBlack.LoadFile("img/rookBlack.png", wxBITMAP_TYPE_PNG);
 
 }
 

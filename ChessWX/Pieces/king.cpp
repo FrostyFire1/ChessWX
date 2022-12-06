@@ -4,7 +4,7 @@ king::king(COLOR color) : piece(color){
 	displayTextWhite = wxT("♔");
 	displayTextBlack = wxT("♚");
 	pieceImageWhite.LoadFile("img/king.png", wxBITMAP_TYPE_PNG);
-	pieceImageBlack.LoadFile("img/king.png", wxBITMAP_TYPE_PNG);
+	pieceImageBlack.LoadFile("img/kingBlack.png", wxBITMAP_TYPE_PNG);
 
 }
 wxBitmap king::getPieceImage() {
