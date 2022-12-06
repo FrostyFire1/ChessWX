@@ -49,6 +49,7 @@ public:
 
 	void setPlayerText();
 	void onButtonClicked(wxCommandEvent& evt);
+	void newGameAtomic(wxCommandEvent& evt);
 	void saveGame(wxCommandEvent& evt);
 	void loadGame(wxCommandEvent& evt);
 	void paintEvent(wxPaintEvent& evt);

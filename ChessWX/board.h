@@ -22,6 +22,8 @@ public:
 	bool check;
 	piece** boardState;
 	piece* lastMoved;
+	bool isAtomic;
+
 	std::string getState();
 	COLOR loadSave(std::string);
 	void initEmpty();
@@ -30,6 +32,8 @@ public:
 	void initMaterial(COLOR color);
 	bool moveIsValid(Coords, Coords);
 	void move(Coords, Coords);
+	void moveAtomic(Coords, Coords);
+	void annihilate(Coords);
 
 	void handlePawn(piece*, Coords, Coords);
 	void checkEnPassant(piece*, Coords);
@@ -37,6 +41,10 @@ public:
 	bool isCheck(COLOR);
 	bool isMate(COLOR);
 	bool isDraw(COLOR);
+	bool hasKing(COLOR);
 	std::vector<std::array<int, 2>> validMoves(Coords);
+
+	std::vector<std::array<int, 2>> validMovesAtomic(Coords);
+	bool containsOwnKing(std::array<int, 2>, COLOR);
 	int arrIndex(Coords);
 };

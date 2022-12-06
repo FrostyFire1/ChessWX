@@ -8,6 +8,7 @@ int board::arrIndex(Coords coords) {
 
 board::board() {
 	check = false;
+	isAtomic = false;
 	this->width = 8;
 	this->height = 8;
 	boardState = new piece * [width * height];
@@ -146,6 +147,7 @@ void board::initMaterial(COLOR color) {
 }
 
 std::vector<std::array<int, 2>> board::validMoves(Coords startPos) {
+	if (isAtomic) return validMovesAtomic(startPos);
 	piece* toMove = boardState[arrIndex(startPos)];
 	COLOR enemyColor;
 	if (toMove->color == WHITE) enemyColor = BLACK;
@@ -172,7 +174,49 @@ std::vector<std::array<int, 2>> board::validMoves(Coords startPos) {
 			filteredMoves.push_back(move);
 		}
 	}
-	return filteredMoves; //TODO: Check for mate, discovery attacks etc.
+	return filteredMoves;
+}
+
+std::vector<std::array<int, 2>> board::validMovesAtomic(Coords startPos) {
+	piece* toMove = boardState[arrIndex(startPos)];
+	COLOR enemyColor;
+	if (toMove->color == WHITE) enemyColor = BLACK;
+	else enemyColor = WHITE;
+	std::vector<std::array<int, 2>> potentialMoves = toMove->generateMoves(boardState, lastMoved, startPos.x, startPos.y);
+	std::vector<std::array<int, 2>> filteredMoves;
+
+	Coords kingCoords = Coords{ -1,-1 };
+	for (int x = 0; x < width; x++) { //Look for the king on the board
+		for (int y = 0; y < height; y++) {
+			piece* potentialKing = boardState[arrIndex(Coords{ x,y })];
+			if (potentialKing->type == KING && potentialKing->color == toMove->color) {
+				kingCoords = Coords{ x,y };
+				break;
+			}
+		}
+	}
+	if (kingCoords.x == -1 && kingCoords.y == -1) return filteredMoves;
+
+
+	for (auto move : potentialMoves) {
+		piece* finalPosPiece = boardState[arrIndex(Coords{ move[0],move[1] })];
+		if (finalPosPiece->color != toMove->color && finalPosPiece->type != PLACEHOLDER && containsOwnKing(move, toMove->color)) continue; //Attacks on enemy pieces which destroy your own king aren't allowed
+		if (finalPosPiece->color == toMove->color) continue; //Target position claimed by allied piece; can't move there
+		filteredMoves.push_back(move);
+	}
+	return filteredMoves;
+}
+
+bool board::containsOwnKing(std::array<int, 2> move, COLOR color) {
+	for (int x = -1; x <= 1; x++) {
+		for (int y = -1; y <= 1; y++) {
+			Coords newCoords = { move[0] + x, move[1] + y };
+			if (isOutOfBounds(newCoords.x, newCoords.y)) continue;
+			piece* atCoords = boardState[arrIndex(newCoords)];
+			if (atCoords->type == KING && atCoords->color == color) return true;
+		}
+	}
+	return false;
 }
 
 bool board::moveIsValid(Coords startPos, Coords finalPos) {
@@ -187,6 +231,10 @@ bool board::moveIsValid(Coords startPos, Coords finalPos) {
 }
 
 void board::move(Coords start, Coords end) {
+	if (isAtomic) {
+		moveAtomic(start, end);
+		return;
+	}
 	piece* movedPiece = boardState[arrIndex(start)];
 	int distance = abs(start.x - end.x) + abs(start.y - end.y);
 	int distanceX = abs(start.x - end.x);
@@ -205,13 +253,58 @@ void board::move(Coords start, Coords end) {
 
 }
 
+void board::moveAtomic(Coords start, Coords end) {
+	piece* movedPiece = boardState[arrIndex(start)];
+	piece* atEnd = boardState[arrIndex(end)];
+	int distance = abs(start.x - end.x) + abs(start.y - end.y);
+	int distanceX = abs(start.x - end.x);
+	movedPiece->lastMoveDistance = distance;
+	movedPiece->hasMoved = true;
+
+	if (movedPiece->type == PAWN) handlePawn(movedPiece, start, end);
+	else if (movedPiece->type == KING && distanceX > 1) castle(movedPiece, end);
+	else {
+		if (atEnd->color != movedPiece->color && atEnd->type != PLACEHOLDER) annihilate(end);
+		else boardState[arrIndex(end)] = movedPiece;
+	}
+
+	boardState[arrIndex(start)] = new piece(COLOR(UNKNOWN));
+	lastMoved = boardState[arrIndex(end)];
+}
+
+void board::annihilate(Coords end) {
+	for (int x = -1; x <= 1; x++) {
+		for (int y = -1; y <= 1; y++) {
+			Coords newCoords = { end.x + x, end.y + y };
+			piece* atNewCoords = boardState[arrIndex(newCoords)];
+			if (isOutOfBounds(newCoords.x, newCoords.y)) continue;
+			if (atNewCoords->type == PAWN && (x != 0 || y != 0)) continue; //Destroy the piece at end coordinates regardless if it's a pawn or not
+			boardState[arrIndex(newCoords)] = new piece(COLOR(UNKNOWN));
+		}
+	}
+}
+
+bool board::hasKing(COLOR color) {
+	Coords kingCoords = Coords{ -1,-1 };
+	for (int x = 0; x < width; x++) { //Look for the king on the board
+		for (int y = 0; y < height; y++) {
+			piece* potentialKing = boardState[arrIndex(Coords{ x,y })];
+			if (potentialKing->type == KING && potentialKing->color == color) {
+				kingCoords = Coords{ x,y };
+				break;
+			}
+		}
+	}
+	return !(kingCoords.x == -1 && kingCoords.y == -1);
+}
+
 void board::handlePawn(piece* pawn, Coords start, Coords end) {
 	//Check for en passant
 	if (boardState[arrIndex(end)]->type == PLACEHOLDER) checkEnPassant(pawn, end);
 
 
 	//Check for promotion
-	if ((pawn->color == WHITE && end.x == 0) || (pawn->color == BLACK && end.x == 7)) {
+	else if ((pawn->color == WHITE && end.x == 0) || (pawn->color == BLACK && end.x == 7)) {
 		boardState[arrIndex(end)] = new queen(COLOR(pawn->color));
 	}
 	else {
@@ -229,8 +322,15 @@ void board::checkEnPassant(piece* pawn, Coords end) {
 	if (!isOutOfBounds(enPassant.x, enPassant.y)){
 		potentialPawn = boardState[arrIndex(enPassant)];
 		if (potentialPawn->type == PAWN && potentialPawn->color != pawn->color && potentialPawn == lastMoved) {
+			if (isAtomic) {
+				boardState[arrIndex(end)] = pawn;
+				annihilate(end);
+			}
 			boardState[arrIndex(enPassant)] = new piece(COLOR(UNKNOWN));
 			return;
+		}
+		else {
+			boardState[arrIndex(end)] = pawn;
 		}
 	}
 	

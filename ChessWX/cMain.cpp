@@ -5,6 +5,7 @@
 wxBEGIN_EVENT_TABLE(cMain, wxFrame)
 	EVT_BUTTON(10001, onButtonClicked)
     EVT_BUTTON(10002, loadGame)
+    EVT_BUTTON(10003, newGameAtomic)
     EVT_BUTTON(10004, saveGame)
     EVT_PAINT(paintEvent)
     EVT_SIZE(OnSize)
@@ -172,15 +173,25 @@ void cMain::setPlayerText() {
     else {
         text = "Current player: Black ";
     }
-    if (isCheck) text += "CHECK";
-    if (isMate) {
-        text = "CHECKMATE!";
-        if (potentialLoser == WHITE) text += " White wins!";
-        else text += " Black wins!";
+    if (!gameBoard->isAtomic) {
+        if (isCheck) text += "CHECK";
+        if (isMate) {
+            text = "CHECKMATE!";
+            if (potentialLoser == WHITE) text += " White wins!";
+            else text += " Black wins!";
+        }
+        else if (isDraw) {
+            text = "STALEMATE!";
+        }
     }
-    else if (isDraw) {
-        text = "STALEMATE!";
+    else {
+        if (!(gameBoard->hasKing(curPlayer))) {
+            text = "GAME OVER!";
+            if (curPlayer == WHITE) text += " Black wins!";
+            else text += " White wins!";
+        }
     }
+
     playerText->SetLabelText(text);
 }
 void cMain::movePiece(board::Coords startPos, board::Coords finalPos) {
@@ -211,9 +222,15 @@ void cMain::onButtonClicked(wxCommandEvent& evt){
 
 
 void cMain::saveGame(wxCommandEvent& evt) {
+    wxFileDialog saveFileDialog(this, _("Save txt file"), "", "", "txt files (*.txt)|*.txt", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+    if (saveFileDialog.ShowModal() == wxID_CANCEL) {
+        evt.Skip();
+        return;// the user changed idea...
+    }
+
     std::string gameState = gameBoard->getState();
     std::ofstream save;
-    save.open("gameSave.txt");
+    save.open(saveFileDialog.GetPath().ToStdString());
     save << gameState;
     if (curPlayer == WHITE) save << "white";
     else save << "black";
@@ -223,12 +240,25 @@ void cMain::saveGame(wxCommandEvent& evt) {
 }
 
 void cMain::loadGame(wxCommandEvent& evt) {
-    curPlayer = gameBoard->loadSave("gameSave.txt");
+    wxFileDialog openFileDialog(this, _("Open txt file"), "", "", "txt files (*.txt)|*.txt", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+    if (openFileDialog.ShowModal() == wxID_CANCEL) {
+        evt.Skip();
+        return;     // the user changed idea...
+    }
+    curPlayer = gameBoard->loadSave(openFileDialog.GetPath().ToStdString());
     setPlayerText();
     windowSizer->Hide(menuSizer);
     windowSizer->Show(gameSizer);
     windowSizer->Layout();
     renderBoard();
+    evt.Skip();
+}
+
+void cMain::newGameAtomic(wxCommandEvent& evt) {
+    gameBoard->isAtomic = true;
+    windowSizer->Hide(menuSizer);
+    windowSizer->Show(gameSizer);
+    windowSizer->Layout();
     evt.Skip();
 }
 // void cMain::paintBackground(wxEraseEvent& Event) {
