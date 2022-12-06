@@ -23,6 +23,60 @@ void board::initEmpty() {
 	}
 }
 
+std::string pieceType(piece* piece) {
+	switch (piece->type) {
+	case PAWN:
+		return "pawn";
+	case ROOK:
+		return "rook";
+	case KNIGHT:
+		return "knight";
+	case BISHOP:
+		return "bishop";
+	case QUEEN:
+		return "queen";
+	case KING:
+		return "king";
+	default:
+		return "placeholder";
+	}
+}
+
+std::string pieceColor(piece* piece) {
+	switch (piece->color) {
+	case WHITE:
+		return "white";
+	case BLACK:
+		return "black";
+	case UNKNOWN:
+		return "unknown";
+	default:
+		return "undefined";
+	}
+}
+
+std::string board::getState() {
+	std::string state = "";
+	for (int x = 0; x < width; x++) {
+		for (int y = 0; y < height; y++) {
+			piece* curPiece = boardState[arrIndex(Coords{ x,y })];
+			state += "{";
+			state += pieceType(curPiece);
+			state += ",";
+			state += pieceColor(curPiece);
+			state += ",";
+			state += std::to_string(curPiece->hasMoved);
+			state += ",";
+			state += std::to_string(curPiece->lastMoveDistance);
+			state += "}";
+			if (y < height - 1) state += ",";
+		}
+		state += "\n";
+	}
+	return state;
+}
+
+
 void board::initBoard() {
 	initPawns();
 	initMaterial(COLOR(WHITE));

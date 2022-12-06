@@ -1,4 +1,5 @@
 #pragma once
+#include "util.h"
 #include "Pieces/piece.h"
 #include "Pieces/pawn.h"
 #include "Pieces/rook.h"
@@ -21,6 +22,7 @@ public:
 	bool check;
 	piece** boardState;
 	piece* lastMoved;
+	std::string getState();
 	void initEmpty();
 	void initBoard();
 	void initPawns();

@@ -29,11 +29,14 @@ public:
 	wxBoxSizer* menuSizer = nullptr;
 	wxButton* newGameButton = nullptr;
 	wxButton* atomicChessButton = nullptr;
+	wxButton* loadGameButton = nullptr;
 
 	wxBoxSizer* gameSizer = nullptr;
 	wxGridSizer* chessBoard = nullptr;
 	wxButton** boardButtons;
+	wxButton* saveGameButton = nullptr;
 	wxStaticText* playerText;
+
 
 	wxImage backgroundImg;
 	wxBitmap resized;
@@ -45,6 +48,8 @@ public:
 	COLOR curPlayer = WHITE;
 
 	void onButtonClicked(wxCommandEvent& evt);
+	void saveGame(wxCommandEvent& evt);
+	void loadGame(wxCommandEvent& evt);
 	void paintEvent(wxPaintEvent& evt);
 	void paintNow();
 	void render(wxDC& dc);
@@ -54,6 +59,7 @@ public:
 	void initVariables();
 	void initMenu();
 	void initGame();
+	void initLegend();
 
 	void boardSelect(wxCommandEvent& evt);
 	void handleSelection(int, int);

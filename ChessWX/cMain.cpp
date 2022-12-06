@@ -1,7 +1,11 @@
-#pragma once
+﻿#pragma once
 #include "cMain.h"
+#include <iostream>
+#include <fstream>
 wxBEGIN_EVENT_TABLE(cMain, wxFrame)
 	EVT_BUTTON(10001, onButtonClicked)
+    EVT_BUTTON(10002, loadGame)
+    EVT_BUTTON(10004, saveGame)
     EVT_PAINT(paintEvent)
     EVT_SIZE(OnSize)
 wxEND_EVENT_TABLE()
@@ -19,6 +23,7 @@ cMain::~cMain(){
 
 void cMain::initVariables() {
     windowSizer = new wxBoxSizer(wxHORIZONTAL);
+
     initMenu();
     initGame();
 
@@ -26,6 +31,8 @@ void cMain::initVariables() {
     windowSizer->Add(menuSizer, 1, wxDEFAULT);
     windowSizer->Add(gameSizer, 2, wxDEFAULT);
     windowSizer->Hide(gameSizer);
+
+
     this->SetSizer(windowSizer);
     backgroundImg.LoadFile("img/background.png", wxBITMAP_TYPE_PNG);
     buttonBGRemoved.LoadFile("img/bg.png", wxBITMAP_TYPE_PNG);
@@ -35,11 +42,16 @@ void cMain::initMenu() {
     menuSizer = new wxBoxSizer(wxVERTICAL);
     newGameButton = new wxButton(this, 10001, "Nowa gra", wxDefaultPosition, wxSize(150, 60));
     newGameButton->SetBackgroundColour(wxColour(100, 200, 100));
-    atomicChessButton = new wxButton(this, 10002, "Atomic Chess", wxDefaultPosition, wxSize(150, 60));
+    loadGameButton = new wxButton(this, 10002, "Wczytaj gre", wxDefaultPosition, wxSize(150, 60));
+    loadGameButton->SetBackgroundColour(wxColour(200, 100, 100));
+    atomicChessButton = new wxButton(this, 10003, "Atomic Chess", wxDefaultPosition, wxSize(150, 60));
     atomicChessButton->SetBackgroundColour(wxColour(100, 100, 200));
+
+
 
     menuSizer->Add(0, 0, 5);
     menuSizer->Add(newGameButton, 2, wxDEFAULT, 10);
+    menuSizer->Add(loadGameButton, 2, wxDEFAULT, 10);
     menuSizer->Add(atomicChessButton, 2, wxDEFAULT, 10);
     menuSizer->Add(0, 0, 5);
 }
@@ -50,6 +62,8 @@ void cMain::initGame() {
     gameBoard = new board();
     boardButtons = new wxButton * [8 * 8]; //2D array, simulates chess board
     playerText = new wxStaticText(this, wxID_ANY, wxT("Current player: White"), wxPoint(0,0), wxSize(400, 60));
+    saveGameButton = new wxButton(this, 10004, wxT("Zapisz gre"), wxDefaultPosition, wxSize(150,60));
+    saveGameButton->SetBackgroundColour(wxColor(150, 100, 200));
     wxFont font = GetFont();
     font.SetPointSize(25);
 
@@ -69,9 +83,28 @@ void cMain::initGame() {
     font.SetPointSize(18);
     playerText->SetFont(font);
     gameSizer->Add(playerText, 1, wxALIGN_RIGHT, 0);
+    initLegend();
+    gameSizer->Add(saveGameButton, 1, wxALIGN_RIGHT, 0);
     gameSizer->Add(0, 0, 3); //Add spacing
     gameSizer->Add(chessBoard, 2, wxSHAPED, 0);
 }
+
+void cMain::initLegend() {
+
+    wxString legendText = "";
+    legendText += wxT("Politechnika Krakowska/UJ - Pionek\n");
+    legendText += wxT("EAiIB - Wieża\n");
+    legendText += wxT("Wydział odlewnictwa - Skoczek\n");
+    legendText += wxT("WWNiG - Goniec\n");
+    legendText += wxT("WIET - Królowa\n");
+    legendText += wxT("WIMiIP - Król\n");
+
+    wxStaticText* legend = new wxStaticText(this, wxID_ANY, legendText);
+    gameSizer->Add(legend, 1, wxALIGN_RIGHT, 10);
+    
+}
+
+
 
 void cMain::boardSelect(wxCommandEvent& evt) {
     int trueId = evt.GetId() - 20000;
@@ -152,6 +185,11 @@ void cMain::highlightValidMoves(std::vector<std::array<int,2>> validMoves) {
     }
 }
 
+/*
+------------------------------------------------------------------------------------------------------------
+                                                BUTTON EVENTS
+------------------------------------------------------------------------------------------------------------
+*/
 void cMain::onButtonClicked(wxCommandEvent& evt){
     //windowSizer->Layout();
     windowSizer->Hide(menuSizer);
@@ -161,6 +199,20 @@ void cMain::onButtonClicked(wxCommandEvent& evt){
     evt.Skip();
 }
 
+
+void cMain::saveGame(wxCommandEvent& evt) {
+    std::string gameState = gameBoard->getState();
+    std::ofstream save;
+    save.open("gameSave.txt");
+    save << gameState;
+    save.close();
+
+    evt.Skip();
+}
+
+void cMain::loadGame(wxCommandEvent& evt) {
+
+}
 // void cMain::paintBackground(wxEraseEvent& Event) {
 //	wxDC* DC = Event.GetDC();
 //	DC->DrawBitmap(backgroundImage, 0, 0, false);

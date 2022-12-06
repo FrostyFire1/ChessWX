@@ -1,0 +1,8 @@
+{rook,black,0,0},{knight,black,0,0},{bishop,black,0,0},{queen,black,0,0},{king,black,0,0},{bishop,black,0,0},{knight,black,0,0},{rook,black,0,0}
+{pawn,black,0,0},{pawn,black,0,0},{pawn,black,0,0},{pawn,black,0,0},{placeholder,unknown,0,0},{pawn,black,0,0},{pawn,black,0,0},{pawn,black,0,0}
+{placeholder,unknown,0,0},{placeholder,unknown,0,0},{placeholder,unknown,0,0},{placeholder,unknown,0,0},{pawn,black,1,1},{placeholder,unknown,0,0},{placeholder,unknown,0,0},{placeholder,unknown,0,0}
+{placeholder,unknown,0,0},{placeholder,unknown,0,0},{placeholder,unknown,0,0},{placeholder,unknown,0,0},{placeholder,unknown,0,0},{placeholder,unknown,0,0},{placeholder,unknown,0,0},{placeholder,unknown,0,0}
+{placeholder,unknown,0,0},{placeholder,unknown,0,0},{placeholder,unknown,0,0},{pawn,white,1,2},{placeholder,unknown,0,0},{bishop,white,1,6},{placeholder,unknown,0,0},{placeholder,unknown,0,0}
+{placeholder,unknown,0,0},{placeholder,unknown,0,0},{placeholder,unknown,0,0},{placeholder,unknown,0,0},{placeholder,unknown,0,0},{placeholder,unknown,0,0},{placeholder,unknown,0,0},{placeholder,unknown,0,0}
+{pawn,white,0,0},{pawn,white,0,0},{pawn,white,0,0},{placeholder,unknown,0,0},{pawn,white,0,0},{pawn,white,0,0},{pawn,white,0,0},{pawn,white,0,0}
+{rook,white,0,0},{knight,white,0,0},{placeholder,unknown,0,0},{queen,white,0,0},{king,white,0,0},{bishop,white,0,0},{knight,white,0,0},{rook,white,0,0}

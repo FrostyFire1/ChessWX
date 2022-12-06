@@ -3,6 +3,7 @@
 piece::piece(COLOR color) {
 	type = PLACEHOLDER;
 	hasMoved = false;
+	lastMoveDistance = 0;
 	displayTextWhite = wxT("");
 	displayTextBlack = wxT("");
 	this->color = color;
