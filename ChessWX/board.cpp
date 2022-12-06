@@ -99,11 +99,12 @@ bool board::moveIsValid(Coords startPos, Coords finalPos) {
 void board::move(Coords start, Coords end) {
 	piece* movedPiece = boardState[arrIndex(start)];
 	int distance = abs(start.x - end.x) + abs(start.y - end.y);
+	int distanceX = abs(start.x - end.x);
 	movedPiece->lastMoveDistance = distance;
 	movedPiece->hasMoved = true;
 
 	if (movedPiece->type == PAWN) handlePawn(movedPiece, start, end);
-	else if (movedPiece->type == KING && distance > 1) castle(movedPiece,end);
+	else if (movedPiece->type == KING && distanceX > 1) castle(movedPiece,end);
 	else {
 		boardState[arrIndex(end)] = boardState[arrIndex(start)];
 	}
@@ -198,6 +199,7 @@ bool board::isCheck(COLOR color) {
 }
 
 bool board::isMate(COLOR color) {
+	if (!isCheck(color)) return false;
 	COLOR enemyColor;
 	if (color == WHITE) enemyColor = BLACK;
 	else enemyColor = WHITE;
@@ -219,6 +221,25 @@ bool board::isMate(COLOR color) {
 			piece* potentialEnemy = boardState[arrIndex(Coords{ x,y })];
 			if (potentialEnemy->color == enemyColor) {
 				std::vector<std::array<int, 2>> moveList = this->validMoves(Coords{ x,y }); //Check if there's any valid block
+				if (!moveList.empty()) return false;
+			}
+
+		}
+	}
+	return true;
+}
+
+bool board::isDraw(COLOR color) {
+	COLOR enemyColor;
+	if (color == WHITE) enemyColor = BLACK;
+	else enemyColor = WHITE;
+
+	for (int x = 0; x < width; x++) {
+		for (int y = 0; y < height; y++) {
+
+			piece* potentialEnemy = boardState[arrIndex(Coords{ x,y })];
+			if (potentialEnemy->color == enemyColor) {
+				std::vector<std::array<int, 2>> moveList = this->validMoves(Coords{ x,y }); //Check if there's any valid moves
 				if (!moveList.empty()) return false;
 			}
 

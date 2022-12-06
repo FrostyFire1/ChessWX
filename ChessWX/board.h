@@ -33,6 +33,7 @@ public:
 	void castle(piece*, Coords);
 	bool isCheck(COLOR);
 	bool isMate(COLOR);
+	bool isDraw(COLOR);
 	std::vector<std::array<int, 2>> validMoves(Coords);
 	int arrIndex(Coords);
 };

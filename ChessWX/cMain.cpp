@@ -118,6 +118,7 @@ void cMain::handleSelection(int x, int y) {
         std::string text = "";
         bool isCheck = gameBoard->isCheck(curPlayer);
         bool isMate = gameBoard->isMate(curPlayer);
+        bool isDraw = gameBoard->isDraw(curPlayer);
         COLOR potentialWinner = curPlayer;
         if (curPlayer == WHITE) {
             curPlayer = BLACK; 
@@ -132,6 +133,9 @@ void cMain::handleSelection(int x, int y) {
             text = "CHECKMATE!";
             if (potentialWinner == WHITE) text += " White wins!";
             else text += " Black wins!";
+        }
+        else if (isDraw) {
+            text = "STALEMATE!";
         }
         playerText->SetLabelText(text);
     }
