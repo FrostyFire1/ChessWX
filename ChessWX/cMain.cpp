@@ -84,6 +84,7 @@ void cMain::initGame() {
     font.SetPointSize(18);
     playerText->SetFont(font);
     gameSizer->Add(playerText, 1, wxALIGN_RIGHT, 0);
+    gameSizer->Add(0, 0, 1);
     initLegend();
     gameSizer->Add(saveGameButton, 1, wxALIGN_RIGHT, 0);
     gameSizer->Add(0, 0, 3); //Add spacing
@@ -131,10 +132,10 @@ void cMain::handleSelection(int x, int y) {
         finalPos.y = y;
 
         if (selectedPiece->color == curPlayer) {
-            renderBoard();
             startPos.x = x;
             startPos.y = y;
             std::vector<std::array<int, 2>> validMoves = gameBoard->validMoves(startPos);
+            renderBoard();
             highlightValidMoves(validMoves);
             return;
         }
@@ -191,7 +192,7 @@ void cMain::setPlayerText() {
             else text += " White wins!";
         }
     }
-
+    if (gameBoard->isAtomic) text += "\nYOU ARE PLAYING ATOMIC CHESS";
     playerText->SetLabelText(text);
 }
 void cMain::movePiece(board::Coords startPos, board::Coords finalPos) {
@@ -232,8 +233,9 @@ void cMain::saveGame(wxCommandEvent& evt) {
     std::ofstream save;
     save.open(saveFileDialog.GetPath().ToStdString());
     save << gameState;
-    if (curPlayer == WHITE) save << "white";
-    else save << "black";
+    if (curPlayer == WHITE) save << "white\n";
+    else save << "black\n";
+    save << gameBoard->isAtomic;
     save.close();
 
     evt.Skip();
@@ -256,6 +258,7 @@ void cMain::loadGame(wxCommandEvent& evt) {
 
 void cMain::newGameAtomic(wxCommandEvent& evt) {
     gameBoard->isAtomic = true;
+    setPlayerText();
     windowSizer->Hide(menuSizer);
     windowSizer->Show(gameSizer);
     windowSizer->Layout();

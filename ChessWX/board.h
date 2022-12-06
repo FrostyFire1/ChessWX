@@ -42,6 +42,7 @@ public:
 	bool isMate(COLOR);
 	bool isDraw(COLOR);
 	bool hasKing(COLOR);
+	Coords findKing(COLOR);
 	std::vector<std::array<int, 2>> validMoves(Coords);
 
 	std::vector<std::array<int, 2>> validMovesAtomic(Coords);

@@ -109,8 +109,10 @@ COLOR board::loadSave(std::string saveName) {
 		boardState[index] = makePiece(rowData);
 		index++;
 	}
-	std::string color;
+	std::string color, isAtomic;
 	save >> color;
+	save >> isAtomic;
+	this->isAtomic = stoi(isAtomic);
 	if (color == "white") return WHITE;
 	else return BLACK;
 }
@@ -185,16 +187,7 @@ std::vector<std::array<int, 2>> board::validMovesAtomic(Coords startPos) {
 	std::vector<std::array<int, 2>> potentialMoves = toMove->generateMoves(boardState, lastMoved, startPos.x, startPos.y);
 	std::vector<std::array<int, 2>> filteredMoves;
 
-	Coords kingCoords = Coords{ -1,-1 };
-	for (int x = 0; x < width; x++) { //Look for the king on the board
-		for (int y = 0; y < height; y++) {
-			piece* potentialKing = boardState[arrIndex(Coords{ x,y })];
-			if (potentialKing->type == KING && potentialKing->color == toMove->color) {
-				kingCoords = Coords{ x,y };
-				break;
-			}
-		}
-	}
+	Coords kingCoords = findKing(toMove->color);
 	if (kingCoords.x == -1 && kingCoords.y == -1) return filteredMoves;
 
 
@@ -285,16 +278,7 @@ void board::annihilate(Coords end) {
 }
 
 bool board::hasKing(COLOR color) {
-	Coords kingCoords = Coords{ -1,-1 };
-	for (int x = 0; x < width; x++) { //Look for the king on the board
-		for (int y = 0; y < height; y++) {
-			piece* potentialKing = boardState[arrIndex(Coords{ x,y })];
-			if (potentialKing->type == KING && potentialKing->color == color) {
-				kingCoords = Coords{ x,y };
-				break;
-			}
-		}
-	}
+	Coords kingCoords = findKing(color);
 	return !(kingCoords.x == -1 && kingCoords.y == -1);
 }
 
@@ -359,16 +343,7 @@ bool board::isCheck(COLOR color) {
 	COLOR enemyColor;
 	if (color == WHITE) enemyColor = BLACK;
 	else enemyColor = WHITE;
-	Coords kingCoords = Coords{ -1,-1 };
-	for (int x = 0; x < width; x++) { //Look for the king on the board
-		for (int y = 0; y < height; y++) {
-			piece* potentialKing = boardState[arrIndex(Coords{ x,y })];
-			if (potentialKing->type == KING && potentialKing->color == enemyColor) {
-				kingCoords = Coords{ x,y };
-				break;
-			}
-		}
-	}
+	Coords kingCoords = findKing(enemyColor);
 
 	for (int x = 0; x < width; x++) { //Check every allied piece if they have the king in check
 		for (int y = 0; y < height; y++) {
@@ -394,16 +369,7 @@ bool board::isMate(COLOR color) {
 	if (color == WHITE) enemyColor = BLACK;
 	else enemyColor = WHITE;
 
-	Coords kingCoords = Coords{ -1,-1 };
-	for (int x = 0; x < width; x++) { //Look for the king on the board
-		for (int y = 0; y < height; y++) {
-			piece* potentialKing = boardState[arrIndex(Coords{ x,y })];
-			if (potentialKing->type == KING && potentialKing->color == enemyColor) {
-				kingCoords = Coords{ x,y };
-				break;
-			}
-		}
-	}
+	Coords kingCoords = findKing(enemyColor);
 
 	for (int x = 0; x < width; x++) { //Check every allied piece if they have the king in check
 		for (int y = 0; y < height; y++) {
@@ -436,4 +402,18 @@ bool board::isDraw(COLOR color) {
 		}
 	}
 	return true;
+}
+
+board::Coords board::findKing(COLOR color) {
+	Coords kingCoords = Coords{ -1,-1 };
+	for (int x = 0; x < width; x++) { //Look for the king on the board
+		for (int y = 0; y < height; y++) {
+			piece* potentialKing = boardState[arrIndex(Coords{ x,y })];
+			if (potentialKing->type == KING && potentialKing->color == color) {
+				kingCoords = Coords{ x,y };
+				break;
+			}
+		}
+	}
+	return kingCoords;
 }
