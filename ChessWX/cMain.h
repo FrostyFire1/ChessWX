@@ -32,10 +32,12 @@ public:
 	wxButton* loadGameButton = nullptr;
 
 	wxBoxSizer* gameSizer = nullptr;
+	wxBoxSizer* gameplaySizer = nullptr;
 	wxGridSizer* chessBoard = nullptr;
 	wxButton** boardButtons;
 	wxButton* saveGameButton = nullptr;
 	wxButton* resetGameButton = nullptr;
+	wxButton* mainMenu = nullptr;
 	wxStaticText* playerText;
 
 
@@ -54,6 +56,8 @@ public:
 	void saveGame(wxCommandEvent& evt);
 	void loadGame(wxCommandEvent& evt);
 	void resetGame(wxCommandEvent& evt);
+	void mainMenuClick(wxCommandEvent& evt);
+
 	void paintEvent(wxPaintEvent& evt);
 	void paintNow();
 	void render(wxDC& dc);

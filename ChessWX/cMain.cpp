@@ -8,6 +8,7 @@ wxBEGIN_EVENT_TABLE(cMain, wxFrame)
     EVT_BUTTON(10003, newGameAtomic)
     EVT_BUTTON(10004, saveGame)
     EVT_BUTTON(10005, resetGame)
+    EVT_BUTTON(10006, mainMenuClick)
     EVT_PAINT(paintEvent)
     EVT_SIZE(OnSize)
 wxEND_EVENT_TABLE()
@@ -60,6 +61,7 @@ void cMain::initMenu() {
 
 void cMain::initGame() {
     gameSizer = new wxBoxSizer(wxVERTICAL);
+    gameplaySizer = new wxBoxSizer(wxHORIZONTAL);
     chessBoard = new wxGridSizer(8, 8, 0, 0);
     gameBoard = new board();
     boardButtons = new wxButton * [8 * 8]; //2D array, simulates chess board
@@ -69,6 +71,8 @@ void cMain::initGame() {
     saveGameButton->SetBackgroundColour(wxColor(150, 100, 200));
     resetGameButton = new wxButton(this, 10005, wxT("Zrestartuj gre"), wxDefaultPosition, wxSize(150, 60));
     resetGameButton->SetBackgroundColour(wxColor(100, 200, 150));
+    mainMenu = new wxButton(this, 10006, wxT("Wróć do menu"), wxDefaultPosition, wxSize(150, 60));
+    mainMenu->SetBackgroundColour(wxColor(200, 150, 100));
     wxFont font = GetFont();
     font.SetPointSize(25);
 
@@ -87,13 +91,16 @@ void cMain::initGame() {
     playerText->SetBackgroundColour(wxColour(255, 255, 255));
     font.SetPointSize(18);
     playerText->SetFont(font);
-    gameSizer->Add(playerText, 1, wxALIGN_RIGHT, 0);
     gameSizer->Add(0, 0, 1);
     initLegend();
     gameSizer->Add(saveGameButton, 1, wxALIGN_RIGHT, 0);
     gameSizer->Add(resetGameButton, 1, wxALIGN_RIGHT, 0);
+    gameSizer->Add(mainMenu, 1, wxALIGN_RIGHT, 0);
     gameSizer->Add(0, 0, 3); //Add spacing
-    gameSizer->Add(chessBoard, 2, wxSHAPED, 0);
+
+    gameplaySizer->Add(chessBoard, 1, wxSHAPED | wxALIGN_CENTER, 0);
+    gameplaySizer->Add(playerText, 1, wxDEFAULT, 0);
+    gameSizer->Add(gameplaySizer, 4, wxDEFAULT, 0);
 }
 
 void cMain::initLegend() {
@@ -277,6 +284,17 @@ void cMain::resetGame(wxCommandEvent& evt) {
     curPlayer = WHITE;
     setPlayerText();
     renderBoard();
+}
+
+void cMain::mainMenuClick(wxCommandEvent& evt) {
+    gameBoard = new board();
+    curPlayer = WHITE;
+    setPlayerText();
+    renderBoard();
+    windowSizer->Hide(gameSizer);
+    windowSizer->Show(menuSizer);
+    windowSizer->Layout();
+    evt.Skip();
 }
 // void cMain::paintBackground(wxEraseEvent& Event) {
 //	wxDC* DC = Event.GetDC();

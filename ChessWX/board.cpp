@@ -284,7 +284,7 @@ bool board::hasKing(COLOR color) {
 
 void board::handlePawn(piece* pawn, Coords start, Coords end) {
 	//Check for en passant
-	if (boardState[arrIndex(end)]->type == PLACEHOLDER) checkEnPassant(pawn, end);
+	if (boardState[arrIndex(end)]->type == PLACEHOLDER && end.x != 0 && end.x != 7) checkEnPassant(pawn, end);
 
 
 	//Check for promotion
@@ -292,8 +292,9 @@ void board::handlePawn(piece* pawn, Coords start, Coords end) {
 		boardState[arrIndex(end)] = new queen(COLOR(pawn->color));
 	}
 	else {
-		boardState[arrIndex(end)] = pawn;
-		if (isAtomic) annihilate(end);
+		if (isAtomic && boardState[arrIndex(end)]->type != PLACEHOLDER) annihilate(end);
+		else boardState[arrIndex(end)] = pawn;
+		
 	}
 }
 
