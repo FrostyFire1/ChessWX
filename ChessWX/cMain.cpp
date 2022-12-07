@@ -187,7 +187,10 @@ void cMain::setPlayerText() {
         text = "Current player: Black ";
     }
     if (!gameBoard->isAtomic) {
-        if (isCheck) text += "CHECK";
+        if (isCheck) {
+            text += "CHECK";
+            PlaySound(L"audio/check.wav", NULL, SND_FILENAME | SND_ASYNC);
+        }
         if (isMate) {
             text = "CHECKMATE!";
             if (potentialLoser == WHITE) text += " White wins!";
