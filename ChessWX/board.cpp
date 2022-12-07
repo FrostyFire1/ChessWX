@@ -158,6 +158,10 @@ std::vector<std::array<int, 2>> board::validMoves(Coords startPos) {
 	std::vector<std::array<int, 2>> filteredMoves;
 
 	for (auto move : potentialMoves) {
+		int distanceY = abs(move[1] - startPos.y);
+		if (toMove->type == KING && distanceY > 1) {
+			if (isCheck(enemyColor)) continue;
+		}
 		//Simulate the move
 		piece* temp = boardState[arrIndex(startPos)];
 		piece* tempFinal = boardState[arrIndex(Coords{move[0],move[1]})];
