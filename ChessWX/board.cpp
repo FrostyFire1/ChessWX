@@ -230,12 +230,12 @@ void board::move(Coords start, Coords end) {
 	}
 	piece* movedPiece = boardState[arrIndex(start)];
 	int distance = abs(start.x - end.x) + abs(start.y - end.y);
-	int distanceX = abs(start.x - end.x);
+	int distanceY = abs(start.y - end.y);
 	movedPiece->lastMoveDistance = distance;
 	movedPiece->hasMoved = true;
 
 	if (movedPiece->type == PAWN) handlePawn(movedPiece, start, end);
-	else if (movedPiece->type == KING && distanceX > 1) castle(movedPiece,end);
+	else if (movedPiece->type == KING && distanceY > 1) castle(movedPiece,end);
 	else {
 		boardState[arrIndex(end)] = boardState[arrIndex(start)];
 	}
@@ -293,6 +293,7 @@ void board::handlePawn(piece* pawn, Coords start, Coords end) {
 	}
 	else {
 		boardState[arrIndex(end)] = pawn;
+		if (isAtomic) annihilate(end);
 	}
 }
 
