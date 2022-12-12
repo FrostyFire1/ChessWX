@@ -31,6 +31,7 @@ public:
 	void initPawns();
 	void initMaterial(COLOR color);
 	bool moveIsValid(Coords, Coords);
+	bool canCastle(piece*, Coords, Coords);
 	void move(Coords, Coords);
 	void moveAtomic(Coords, Coords);
 	void annihilate(Coords);
@@ -41,6 +42,7 @@ public:
 	bool isCheck(COLOR);
 	bool isMate(COLOR);
 	bool isDraw(COLOR);
+	bool onlyKingsLeft();
 	bool hasKing(COLOR);
 	Coords findKing(COLOR);
 	std::vector<std::array<int, 2>> validMoves(Coords);

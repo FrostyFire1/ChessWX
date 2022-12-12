@@ -96,11 +96,13 @@ void cMain::initGame() {
     gameSizer->Add(saveGameButton, 1, wxALIGN_RIGHT, 0);
     gameSizer->Add(resetGameButton, 1, wxALIGN_RIGHT, 0);
     gameSizer->Add(mainMenu, 1, wxALIGN_RIGHT, 0);
-    gameSizer->Add(0, 0, 3); //Add spacing
+    gameSizer->Add(0, 0, 1); //Add spacing
 
     gameplaySizer->Add(chessBoard, 1, wxSHAPED | wxALIGN_CENTER, 0);
     gameplaySizer->Add(playerText, 1, wxDEFAULT, 0);
     gameSizer->Add(gameplaySizer, 4, wxDEFAULT, 0);
+    gameSizer->Add(0, 0, 3); //Add spacing
+
 }
 
 void cMain::initLegend() {

@@ -159,8 +159,9 @@ std::vector<std::array<int, 2>> board::validMoves(Coords startPos) {
 
 	for (auto move : potentialMoves) {
 		int distanceY = abs(move[1] - startPos.y);
-		if (toMove->type == KING && distanceY > 1) {
-			if (isCheck(enemyColor)) continue;
+		if (toMove->type == KING && distanceY > 1) { 
+			if (!canCastle(toMove, startPos, Coords{ move[0],move[1] })) continue;
+			if (isCheck(enemyColor)) continue; //King in check can't castle
 		}
 		//Simulate the move
 		piece* temp = boardState[arrIndex(startPos)];
@@ -181,6 +182,36 @@ std::vector<std::array<int, 2>> board::validMoves(Coords startPos) {
 		}
 	}
 	return filteredMoves;
+}
+
+//This function does a preliminary check for king castling. This will not check the final castling Coords, rather the one square before the castle square.
+bool board::canCastle(piece *king, Coords startPos, Coords endPos) {
+	COLOR enemyColor;
+	if (king->color == WHITE) enemyColor = BLACK;
+	else enemyColor = WHITE;
+	if (endPos.y == 6) {
+		endPos.y = 5;
+	}
+	else if (endPos.y == 2) {
+		endPos.y = 3;
+	}
+
+	piece* temp = boardState[arrIndex(startPos)];
+	piece* tempFinal = boardState[arrIndex(endPos)];
+	boardState[arrIndex(startPos)] = new piece(COLOR(UNKNOWN));
+	boardState[arrIndex(endPos)] = temp;
+
+	if (isCheck(enemyColor)) {
+		boardState[arrIndex(startPos)] = temp;
+		boardState[arrIndex(endPos)] = tempFinal; //return board to original state
+		return false;
+	}
+	else {
+		boardState[arrIndex(startPos)] = temp;
+		boardState[arrIndex(endPos)] = tempFinal; //return board to original state
+		return true;
+
+	}
 }
 
 std::vector<std::array<int, 2>> board::validMovesAtomic(Coords startPos) {
@@ -392,6 +423,7 @@ bool board::isMate(COLOR color) {
 }
 
 bool board::isDraw(COLOR color) {
+	if (onlyKingsLeft()) return true;
 	COLOR enemyColor;
 	if (color == WHITE) enemyColor = BLACK;
 	else enemyColor = WHITE;
@@ -422,4 +454,15 @@ board::Coords board::findKing(COLOR color) {
 		}
 	}
 	return kingCoords;
+}
+
+bool board::onlyKingsLeft() {
+	for (int x = 0; x < width; x++) {
+		for (int y = 0; y < height; y++) {
+			Coords atPos = Coords{ x,y };
+			piece* pieceAtPos = boardState[arrIndex(atPos)];
+			if (pieceAtPos->type != KING && pieceAtPos->type != PLACEHOLDER) return false;
+		}
+	}
+	return true;
 }
