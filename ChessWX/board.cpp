@@ -348,6 +348,7 @@ void board::checkEnPassant(piece* pawn, Coords end) {
 				annihilate(end);
 			}
 			boardState[arrIndex(enPassant)] = new piece(COLOR(UNKNOWN));
+			boardState[arrIndex(end)] = pawn;
 			return;
 		}
 		else {
