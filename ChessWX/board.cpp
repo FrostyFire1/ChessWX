@@ -344,11 +344,11 @@ void board::checkEnPassant(piece* pawn, Coords end) {
 		potentialPawn = boardState[arrIndex(enPassant)];
 		if (potentialPawn->type == PAWN && potentialPawn->color != pawn->color && potentialPawn == lastMoved) {
 			if (isAtomic) {
-				boardState[arrIndex(end)] = pawn;
-				annihilate(end);
+				annihilate(enPassant);
+				boardState[arrIndex(end)] = new piece(COLOR(UNKNOWN));
 			}
 			boardState[arrIndex(enPassant)] = new piece(COLOR(UNKNOWN));
-			boardState[arrIndex(end)] = pawn;
+			if (!isAtomic) boardState[arrIndex(end)] = pawn;
 			return;
 		}
 		else {
